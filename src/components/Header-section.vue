@@ -37,4 +37,3 @@ export default {
     color: #E7F0FF
   }
 </style>
-

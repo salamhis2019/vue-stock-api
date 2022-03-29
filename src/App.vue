@@ -59,13 +59,13 @@ export default {
   methods: {
     fetchApi () {
       const ticker = this.symbol.toUpperCase()
-      console.log(ticker)
       fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
         .then((res) => res.json())
         .then((data) => this.getData(data))
         .catch((err) => this.errorMessage(err))
     },
     getData(data) {
+      console.log(data)
       // SET CONTAINER TO SHOW WHEN THE API IS SUCCESSFULLY FETCHED
       const metaData = Object.keys(data)[0]
       const ticker = data[metaData]['2. Symbol']
@@ -97,8 +97,6 @@ export default {
     },
     // eslint-disable-next-line no-unused-vars
     errorMessage(data) {
-      console.log(this.symbol)
-      console.log(this.loadInfoContainer)
       console.log('This is an error try again')
       this.errorClass = 'outline-error'
 
