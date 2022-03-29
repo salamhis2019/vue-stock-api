@@ -30,7 +30,7 @@ export default {
     row-gap: 1em;
     text-align: center;
     height: 200px;
-    width: 900px;
+    max-width: 900px;
 
     margin: 2em auto;
     padding: 1em;
@@ -51,10 +51,9 @@ export default {
   }
 
   .ticker {
-    font-weight: 700;
+    font-weight: 300;
     font-size: 3em;
     font-family: 'Oxygen', sans-serif;    
-    font-weight: 700;
     margin: 0;
   }
 
