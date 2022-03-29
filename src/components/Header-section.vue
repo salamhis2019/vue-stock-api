@@ -23,7 +23,7 @@ export default {
     align-items: center;
     justify-content: space-around;
 
-    color: white;
+    color: #E7F0FF;
     background-color: #1098f7;
 
     border-bottom: 2px solid #E7F0FF;

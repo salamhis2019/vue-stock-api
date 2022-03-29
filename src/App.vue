@@ -2,7 +2,7 @@
 <template>
   <div class="container">
     <!-- HEADER AREA -->
-    <header-section />
+    <!-- <header-section /> -->
     <!-- INPUT CONTAINER -->
     <div class="input-container">
       <input placeholder="Enter Ticker" class="input-element" name="name" type="text" v-model="symbol" @keyup.enter="fetchApi" :id="errorClass">
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import HeaderSection from '@/components/Header-section.vue'
+// import HeaderSection from '@/components/Header-section.vue'
 import DataSection from '@/components/Data-section.vue'
 
 // GLOBAL VARIABLES
@@ -38,7 +38,7 @@ const APIKEY = 'LTSY55G9R1CJFQ11'
 export default {
   name: 'app',
   components: {
-    HeaderSection,
+    // HeaderSection,
     DataSection
   },
   data () {
@@ -65,7 +65,10 @@ export default {
         .catch((err) => this.errorMessage(err))
     },
     getData(data) {
-      console.log(data)
+      // CLEAR INPUT FIELD
+      this.symbol = ""
+      console.log(DataTransferItemList)
+
       // SET CONTAINER TO SHOW WHEN THE API IS SUCCESSFULLY FETCHED
       const metaData = Object.keys(data)[0]
       const ticker = data[metaData]['2. Symbol']
@@ -100,6 +103,7 @@ export default {
       console.log('This is an error try again')
       this.errorClass = 'outline-error'
 
+      this.symbol = ""
       this.loadInfoContainer = false
     }
   }
@@ -107,7 +111,6 @@ export default {
 </script>
 
 <style>
-
   /* GLOBAL STYLES */
   * {
     font-family: 'Nunito', sans-serif;
@@ -117,8 +120,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(#1098f7, #03254E);
     min-height: 100vh;
+
+    background: linear-gradient(to bottom, #1097f728, #03254ef1), url('./images/background.webp');
+    background-size: cover;
+    background-position: center;
   }
 
   .logo {
@@ -126,10 +132,9 @@ export default {
   }
 
   .container {
-    width: 700px;
+    width: 900px;
     margin: 0 auto;
     
-    border: 2px solid #E7F0FF;
     background-color: #E7F0FF;
   }
 
@@ -175,6 +180,8 @@ export default {
     text-transform: uppercase;
   }
 
+  /* BUTTON STYLES */
+
   button {
     margin: 0 auto;
     border: 1px solid #03254E;
@@ -199,7 +206,7 @@ export default {
   }
 
   button:hover, button:focus {
-    background-color: white;
+    background-color: #E7F0FF;
     box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
     color: #03254E;
   }
