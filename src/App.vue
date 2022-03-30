@@ -11,7 +11,6 @@
     <!-- CONTENT LOADED IF THE FETCH IS SUCCESSFUL -->
     <div v-if="loadInfoContainer" class="info-container" :id='errorClass'>
       <data-section 
-        :symbol="symbol"
         :openPrice="openPrice"
         :closePrice="closePrice"
         :highPrice="highPrice"
@@ -67,7 +66,6 @@ export default {
     getData(data) {
       // CLEAR INPUT FIELD
       this.symbol = ""
-      console.log(DataTransferItemList)
 
       // SET CONTAINER TO SHOW WHEN THE API IS SUCCESSFULLY FETCHED
       const metaData = Object.keys(data)[0]

@@ -28,7 +28,6 @@ export default {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     row-gap: 1em;
-    text-align: center;
     height: 200px;
     max-width: 900px;
 
@@ -42,8 +41,8 @@ export default {
   /* STYLES FOR THE OUTPUT */
 
   .description {
+    text-align: left;
     font-family: 'Nunito', sans-serif;
-    vertical-align: middle;
 
     font-size: 1em;
     font-style: italic;
@@ -60,6 +59,7 @@ export default {
   .data {
     font-size: 1.5em;
     font-family: 'Oxygen', sans-serif;
+    text-align: left;
   }
 
   .cell {
@@ -76,5 +76,6 @@ export default {
     max-height: 200px;
 
     vertical-align: middle;
+    text-align: left;
   }
 </style>
