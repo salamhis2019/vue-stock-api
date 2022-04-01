@@ -44,7 +44,7 @@ export default {
     text-align: left;
     font-family: 'Nunito', sans-serif;
 
-    font-size: 1em;
+    font-size: 1.3em;
     font-style: italic;
     margin: auto;
   }

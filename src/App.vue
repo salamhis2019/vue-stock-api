@@ -67,13 +67,15 @@ export default {
       // CLEAR INPUT FIELD
       this.symbol = ""
 
+      console.log(data)
+
       // SET CONTAINER TO SHOW WHEN THE API IS SUCCESSFULLY FETCHED
       const metaData = Object.keys(data)[0]
       const ticker = data[metaData]['2. Symbol']
 
       // GET PRICE FROM USER
       const timeSeries = Object.keys(data)[1]
-      const recentTime = Object.keys(data[timeSeries])[99]
+      const recentTime = Object.keys(data[timeSeries])[0]
 
       // OPEN PRICE
       this.openPrice = Number(data[timeSeries][recentTime]['1. open']).toFixed(2)
@@ -149,7 +151,7 @@ export default {
   .input-element {
     background: none;
     border: none;
-    border-radius: 0;
+    border-radius: 0; 
 
     height: 28px;
     border-bottom: 1px solid #03254E;
