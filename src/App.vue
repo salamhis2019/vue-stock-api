@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 <template>
   <div class="container">
-    <!-- HEADER AREA -->
     <!-- INPUT CONTAINER -->
     <div class="input-container">
       <input placeholder="Enter Ticker" class="input-element" name="name" type="text" v-model="symbol" @keyup.enter="fetchApi" :id="errorClass">
@@ -28,7 +27,6 @@
 </template>
 
 <script>
-// import HeaderSection from '@/components/Header-section.vue'
 import DataSection from '@/components/Data-section.vue'
 // import InputContainer from '@/components/Input-section.vue'
 
@@ -38,7 +36,6 @@ const APIKEY = 'LTSY55G9R1CJFQ11'
 export default {
   name: 'app',
   components: {
-    // HeaderSection,
     DataSection,
     // InputContainer
   },
