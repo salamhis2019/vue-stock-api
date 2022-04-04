@@ -74,7 +74,7 @@ export default {
 
       // GET PRICE FROM USER
       const timeSeries = Object.keys(data)[1]
-      const recentTime = Object.keys(data[timeSeries])[0]
+      const recentTime = Object.keys(data[timeSeries])[0]     
 
       // OPEN PRICE
       this.openPrice = Number(data[timeSeries][recentTime]['1. open']).toFixed(2)
@@ -92,14 +92,23 @@ export default {
       // TICKER VOLUME HTML
       this.volume = Math.floor(Number(data[timeSeries][recentTime]['5. volume']).toFixed(2))
 
+      // LOWEST PRICE
+
+      let minimum = Object.values(data['Time Series (5min)']).map((data) => Number(data['3. low']))
+
+      let lowestPrice = Math.min(...minimum)
+
+      this.lowPrice = lowestPrice
+
       // remove error class 
       this.errorClass = false
 
       this.loadInfoContainer = true
+      
     },
     // eslint-disable-next-line no-unused-vars
     errorMessage(data) {
-      console.log('This is an error try again')
+      console.error('This is an error try again "' + data + '"')
       this.errorClass = 'outline-error'
 
       this.symbol = ""
