@@ -1,6 +1,6 @@
 <template>
   <div class="input-container">
-    <input placeholder="Enter Ticker" class="input-element" name="name" type="text" v-model="symbol" @keyup.enter="fetchApi" :id="errorClass">
+    <input placeholder="Enter Ticker" class="input-element" name="name" type="text" v-model="symbol" @keyup.enter="$emit('fetch')" :id="errorClass">
     <button @click="fetchApi">Generate</button>
   </div>
 </template>
@@ -29,11 +29,12 @@ export default {
   },
   methods: {
     fetchApi () {
+      this.isLoading = true
       const ticker = this.symbol.toUpperCase()
       fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
         .then((res) => res.json())
         .then((data) => this.getData(data))
-        .then(() => (this.isLoading = true))
+        .then(() => (this.isLoading = false))
         .catch((err) => this.errorMessage(err))
     },
     getData(data) {

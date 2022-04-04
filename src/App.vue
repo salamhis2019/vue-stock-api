@@ -57,6 +57,7 @@ export default {
   }, 
   methods: {
     fetchApi () {
+      this.isLoading = true
       const ticker = this.symbol.toUpperCase()
       fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
         .then((res) => res.json())
