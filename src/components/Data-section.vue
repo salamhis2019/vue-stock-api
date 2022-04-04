@@ -16,7 +16,7 @@
 
 
 export default {
-  name: 'Data-section',
+  name: 'DataSection',
   props: ['openPrice', 'closePrice', 'ticker', 'volume', 'highPrice', 'lowPrice']
 }
 </script>

@@ -1,48 +1,17 @@
-/* eslint-disable no-unused-vars */
 <template>
-  <div class="container">
-    <!-- HEADER AREA -->
-    <!-- INPUT CONTAINER -->
-    <div class="input-container">
-      <input placeholder="Enter Ticker" class="input-element" name="name" type="text" v-model="symbol" @keyup.enter="fetchApi" :id="errorClass">
-      <button @click="fetchApi">Generate</button>
-    </div>
-    <!-- <InputContainer /> -->
-    <!-- CONTENT LOADED IF THE FETCH IS SUCCESSFUL -->
-    <div v-if="loadInfoContainer" class="info-container" :id='errorClass'>
-      <DataSection 
-        :openPrice="openPrice"
-        :closePrice="closePrice"
-        :highPrice="highPrice"
-        :lowPrice="lowPrice"
-        :ticker="ticker"
-        :volume="volume"  
-      />
-    </div>
-    <!-- ERROR CONTAINER -->
-    <div v-else class="error-container">
-      <h1>Please enter valid ticker</h1>
-      <img v-if="isLoading" :src="loadingImage" alt="" style="width: 15%">
-    </div>
+  <div class="input-container">
+    <input placeholder="Enter Ticker" class="input-element" name="name" type="text" v-model="symbol" @keyup.enter="fetchApi" :id="errorClass">
+    <button @click="fetchApi">Generate</button>
   </div>
 </template>
 
 <script>
-// import HeaderSection from '@/components/Header-section.vue'
-import DataSection from '@/components/Data-section.vue'
-// import InputContainer from '@/components/Input-section.vue'
 
-// GLOBAL VARIABLES
 const APIKEY = 'LTSY55G9R1CJFQ11'
 
 export default {
-  name: 'app',
-  components: {
-    // HeaderSection,
-    DataSection,
-    // InputContainer
-  },
-  data () {
+  name: "InputContainer",
+  data() {
     return {
       symbol: '',
       openPrice: '',
@@ -55,9 +24,9 @@ export default {
       loadInfoContainer: false,
       isLoading: false,
       errorClass: false,
-      loadingImage: require('../src/images/loading.gif')
+      // loadingImage: require('../src/images/loading.gif')
     }
-  }, 
+  },
   methods: {
     fetchApi () {
       const ticker = this.symbol.toUpperCase()
@@ -107,40 +76,16 @@ export default {
 
       this.symbol = ""
       this.loadInfoContainer = false
+    },
+    updateInfo () {
+      this.$emit('updateInfo', this.fetchApi())
     }
   }
 }
 </script>
 
 <style>
-  /* GLOBAL STYLES */
-  * {
-    font-family: 'Nunito', sans-serif;
-  }
-
-  body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-
-    background: linear-gradient(to bottom, #1097f728, #03254ef1), url('./images/background.webp');
-    background-size: cover;
-    background-position: center;
-  }
-
-  .logo {
-    width: 15%;
-  }
-
-  .container {
-    width: 900px;
-    margin: 0 auto;
-    
-    background-color: #E7F0FF;
-  }
-
-  /* INPUT AREA */
+/* INPUT AREA */
 
   .input-container {
     padding-top: 4em;
@@ -211,20 +156,5 @@ export default {
     background-color: #E7F0FF;
     box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
     color: #03254E;
-  }
-
-  /* ERROR CONTAINER */
-
-  .error-container {
-    text-align: center;
-  }
-
-  .error-container h1 {
-    text-transform: uppercase;
-    color: #03254E
-  }
-
-  #outline-error {
-    border: 2px solid red;
   }
 </style>
