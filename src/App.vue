@@ -20,7 +20,7 @@
     </div>
     <!-- ERROR CONTAINER -->
     <div v-else class="error-container">
-      <h1>Please enter valid ticker</h1>
+      <h1 class="default-text">Please enter valid ticker</h1>
       <img v-if="isLoading" :src="loadingImage" alt="" style="width: 15%">
     </div>
   </div>
@@ -131,10 +131,15 @@ export default {
   }
 
   .container {
+    box-sizing: border-box;
     width: 900px;
     margin: 0 auto;
     
     background-color: #E7F0FF;
+  }
+
+  .default-text {
+    padding-bottom: 1em;
   }
 
   /* INPUT AREA */
