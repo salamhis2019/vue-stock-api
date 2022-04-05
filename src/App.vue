@@ -2,11 +2,13 @@
 <template>
   <div class="container">
     <!-- INPUT CONTAINER -->
-    <div class="input-container">
+    <!-- <div class="input-container">
       <input placeholder="Enter Ticker" class="input-element" name="name" type="text" v-model="symbol" @keyup.enter="fetchApi" :id="errorClass">
       <button @click="fetchApi">Generate</button>
-    </div>
-    <!-- <InputContainer /> -->
+    </div> -->
+    <InputSection 
+      @fetchApi="fetchApi"
+    />
     <!-- CONTENT LOADED IF THE FETCH IS SUCCESSFUL -->
     <div v-if="loadInfoContainer" class="info-container" :id='errorClass'>
       <DataSection 
@@ -28,7 +30,7 @@
 
 <script>
 import DataSection from '@/components/Data-section.vue'
-// import InputContainer from '@/components/Input-section.vue'
+import InputSection from '@/components/Input-section.vue'
 
 // GLOBAL VARIABLES
 const APIKEY = 'LTSY55G9R1CJFQ11'
@@ -37,7 +39,7 @@ export default {
   name: 'app',
   components: {
     DataSection,
-    // InputContainer
+    InputSection
   },
   data () {
     return {
@@ -95,11 +97,11 @@ export default {
 
       // LOWEST PRICE
 
-      let minimum = Object.values(data['Time Series (5min)']).map((data) => Number(data['3. low']))
+      // let minimum = Object.values(data['Time Series (5min)']).map((data) => Number(data['3. low']))
 
-      let lowestPrice = Math.min(...minimum)
+      // let lowestPrice = Math.min(...minimum)
 
-      this.lowPrice = lowestPrice
+      // this.lowPrice = lowestPrice
 
       // remove error class 
       this.errorClass = false
@@ -111,6 +113,7 @@ export default {
     errorMessage(data) {
       console.error('This is an error try again "' + data + '"')
       this.errorClass = 'outline-error'
+      console.log(this.symbol)
 
       this.symbol = ""
       this.loadInfoContainer = false
@@ -150,79 +153,6 @@ export default {
 
   .default-text {
     padding-bottom: 1em;
-  }
-
-  /* INPUT AREA */
-
-  .input-container {
-    padding-top: 4em;
-    text-align: center;
-    margin: 0 auto;
-    height: 80px;
-    transition: 0.2s ease;
-  }
-
-  .input-element {
-    background: none;
-    border: none;
-    border-radius: 0; 
-
-    height: 28px;
-    border-bottom: 1px solid #03254E;
-  }
-
-  .input-element::placeholder {
-    color: #03254E;
-    font-size: 1.2em;
-    text-align: left;
-
-    text-transform: uppercase;
-  }
-
-  .input-element:focus {
-    border-radius: 0px;
-    font-size: 1em;
-    outline: none;
-    color: #03254E;
-    text-transform: uppercase;
-  }
-
-  input[type="text"] {
-    font-size: 1em;
-    color: #03254E;
-
-    text-transform: uppercase;
-  }
-
-  /* BUTTON STYLES */
-
-  button {
-    margin: 0 auto;
-    border: 1px solid #03254E;
-    height: 2em;
-
-    font-size: 1em;
-    background-color: #03254E;
-    color: #E7F0FF;
-    cursor: pointer;
-    vertical-align: baseline;
-    transition: all 250ms;
-  }
-
-  button:focus {
-    background-color: #1098f7;
-    box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
-    transform: translateY(0);
-  }
-
-  button:hover {
-    transform: translateY(-1px);
-  }
-
-  button:hover, button:focus {
-    background-color: #E7F0FF;
-    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
-    color: #03254E;
   }
 
   /* ERROR CONTAINER */
