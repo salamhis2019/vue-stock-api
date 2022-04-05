@@ -1,13 +1,17 @@
+/* 
+  The issue is that the input that the user types in to is a component, and in the 'FetchApi' method it takes in the data called 'symbol' and uses that to look up the ticker the user wants. When I console.log(ticker) or symbol in the 'fetchApi' function, the result is a blank string. App.vue is not seeing the input that the user is putting in, which is resulting in the error. 
+
+  Question: 
+  How can we use the value of the input in a child component within the parent component (App.vue)?
+*/
+
 /* eslint-disable no-unused-vars */
 <template>
   <div class="container">
     <!-- INPUT CONTAINER -->
-    <!-- <div class="input-container">
-      <input placeholder="Enter Ticker" class="input-element" name="name" type="text" v-model="symbol" @keyup.enter="fetchApi" :id="errorClass">
-      <button @click="fetchApi">Generate</button>
-    </div> -->
     <InputSection 
-      @fetchApi="fetchApi"
+      @fetchApi="fetchApi($events)"
+      :symbolInput="symbol"
     />
     <!-- CONTENT LOADED IF THE FETCH IS SUCCESSFUL -->
     <div v-if="loadInfoContainer" class="info-container" :id='errorClass'>
@@ -58,8 +62,10 @@ export default {
     }
   }, 
   methods: {
-    fetchApi () {
+    fetchApi (sym) {
       this.isLoading = true
+      this.symbol = sym
+      console.log(sym)
       const ticker = this.symbol.toUpperCase()
       fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
         .then((res) => res.json())
