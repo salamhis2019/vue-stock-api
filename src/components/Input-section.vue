@@ -1,6 +1,6 @@
 <template>
   <div class="input-container">
-    <input placeholder="Enter Ticker" class="input-element" name="name" type="text" v-model="symbol" @keyup.enter="fetchData" :id="errorClass">
+    <input placeholder="Enter Ticker" class="input-element" name="name" type="text" :value="modelValue" @keyup.enter="$emit('fetchApi')" @input="$emit('update:modelValue', $event.target.value)" :id="errorClass"> 
     <button @click="fetchData">Generate</button>
   </div>
 </template>
@@ -9,7 +9,7 @@
 
 export default {
   name: "InputSection",
-  props: ['symbolInput'],
+  props: ['modelValue', 'errorClass'],
   methods: {
     fetchData() {
       this.$emit('fetchApi', this.symbolInput)

@@ -11,7 +11,8 @@
     <!-- INPUT CONTAINER -->
     <InputSection 
       @fetchApi="fetchApi($events)"
-      :symbolInput="symbol"
+      v-model="symbol"
+      :errorClass="errorClass"
     />
     <!-- CONTENT LOADED IF THE FETCH IS SUCCESSFUL -->
     <div v-if="loadInfoContainer" class="info-container" :id='errorClass'>
@@ -62,16 +63,14 @@ export default {
     }
   }, 
   methods: {
-    fetchApi (sym) {
+    fetchApi () {
       this.isLoading = true
-      this.symbol = sym
-      console.log(sym)
       const ticker = this.symbol.toUpperCase()
       fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
         .then((res) => res.json())
         .then((data) => this.getData(data))
         .then(() => (this.isLoading = true))
-        .catch((err) => this.errorMessage(err))
+        .catch((err) =>  console.log(err))
     },
     getData(data) {
       // CLEAR INPUT FIELD
@@ -103,11 +102,11 @@ export default {
 
       // LOWEST PRICE
 
-      // let minimum = Object.values(data['Time Series (5min)']).map((data) => Number(data['3. low']))
+      let minimum = Object.values(data['Time Series (5min)']).map((data) => Number(data['3. low']))
 
-      // let lowestPrice = Math.min(...minimum)
+      let lowestPrice = Math.min(...minimum)
 
-      // this.lowPrice = lowestPrice
+      this.lowPrice = lowestPrice
 
       // remove error class 
       this.errorClass = false
