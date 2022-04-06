@@ -1,6 +1,8 @@
 <template>
   <div class="input-container">
+    <!-- INPUT AREA TO GENERATE -->
     <input placeholder="Enter Ticker" class="input-element" name="name" type="text" :value="modelValue" @keyup.enter="$emit('fetchApi')" @input="$emit('update:modelValue', $event.target.value)" :id="errorClass"> 
+    <!-- BUTTON TO GENERATE -->
     <button @click="fetchData">Generate</button>
   </div>
 </template>
@@ -9,19 +11,13 @@
 
 export default {
   name: "InputSection",
-  props: ['modelValue', 'errorClass', 'symbol'],
-  methods: {
-    fetchData() {
-      this.$emit('fetchApi', this.symbolInput)
-    }
-  }
+  props: ['modelValue', 'errorClass', 'symbol']
 }
 
 </script>
 
-<style>
-/* INPUT AREA */
-
+<style scoped>
+/* INPUT AREA STYLES */
   .input-container {
     padding-top: 4em;
     text-align: center;
