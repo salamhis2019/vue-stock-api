@@ -9,7 +9,7 @@
 
 export default {
   name: "InputSection",
-  props: ['modelValue', 'errorClass'],
+  props: ['modelValue', 'errorClass', 'symbol'],
   methods: {
     fetchData() {
       this.$emit('fetchApi', this.symbolInput)
