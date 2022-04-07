@@ -1,14 +1,14 @@
 <template>
   <div class="cell">
     <span class="description">Ticker: </span>
-    <h1 class="ticker">{{ ticker }}</h1>
+    <h1 class="ticker">{{ stockInfo.ticker }}</h1>
   </div>
   <div class="cell2">
-    <span class="description">Open: </span><span class="data">{{ openPrice }}</span>
-    <span class="description">Close: </span><span class="data">{{ closePrice }}</span>
-    <span class="description">High: </span><span class="data">{{ highPrice }}</span>
-    <span class="description">Low: </span><span class="data">{{ lowPrice }}</span>
-    <span class="description">Volume: </span><span class="data">{{ volume }}</span>
+    <span class="description">Open: </span><span class="data">{{ stockInfo.openPrice }}</span>
+    <span class="description">Close: </span><span class="data">{{ stockInfo.closePrice }}</span>
+    <span class="description">High: </span><span class="data">{{ stockInfo.highPrice }}</span>
+    <span class="description">Low: </span><span class="data">{{ stockInfo.lowPrice }}</span>
+    <span class="description">Volume: </span><span class="data">{{ stockInfo.volume }}</span>
   </div>
 </template>
 
@@ -17,12 +17,11 @@
 
 export default {
   name: 'DataSection',
-  props: ['openPrice', 'closePrice', 'ticker', 'volume', 'highPrice', 'lowPrice']
+  props: ['stockInfo']
 }
 </script>
 
 <style>
-
   .info-container {
     box-sizing: border-box;
     display: grid;

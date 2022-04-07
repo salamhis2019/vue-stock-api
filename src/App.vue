@@ -1,28 +1,16 @@
-/* 
-  The issue is that the input that the user types in to is a component, and in the 'FetchApi' method it takes in the data called 'symbol' and uses that to look up the ticker the user wants. When I console.log(ticker) or symbol in the 'fetchApi' function, the result is a blank string. App.vue is not seeing the input that the user is putting in, which is resulting in the error. 
-
-  Question: 
-  How can we use the value of the input in a child component within the parent component (App.vue)?
-*/
-
-/* eslint-disable no-unused-vars */
 <template>
   <div class="container">
     <!-- INPUT CONTAINER -->
     <InputSection 
-      @fetchApi="fetchApi($events)"
+      @lookUpSymbol="fetchApi()"
+      @update:modelValue="value => symbol = value"
       v-model="symbol"
       :errorClass="errorClass"
     />
     <!-- CONTENT LOADED IF THE FETCH IS SUCCESSFUL -->
     <div v-if="loadInfoContainer" class="info-container" :id='errorClass'>
       <DataSection 
-        :openPrice="openPrice"
-        :closePrice="closePrice"
-        :highPrice="highPrice"
-        :lowPrice="lowPrice"
-        :ticker="ticker"
-        :volume="volume"  
+        :stockInfo="stockInfo"
       />
     </div>
     <!-- ERROR CONTAINER -->
@@ -49,12 +37,14 @@ export default {
   data () {
     return {
       symbol: '',
-      openPrice: '',
-      closePrice: '',
-      highPrice: '',
-      lowPrice: '',
-      volume: '',
-      ticker: '',
+      stockInfo: {
+        openPrice: '',
+        closePrice: '',
+        highPrice: '',
+        lowPrice: '',
+        volume: '',
+        ticker: '',
+      },
       loadingUrl: '',
       loadInfoContainer: false,
       isLoading: false,
@@ -73,6 +63,8 @@ export default {
         .catch((err) =>  console.log(err))
     },
     getData(data) {
+      console.log('Request complete')
+      console.log(data)
       // CLEAR INPUT FIELD
       this.symbol = ""
 
@@ -82,39 +74,41 @@ export default {
 
       // GET PRICE FROM USER
       const timeSeries = Object.keys(data)[1]
-      const recentTime = Object.keys(data[timeSeries])[0]     
+      const recentTime = Object.keys(data[timeSeries])[0]    
+      
+      // CHANGE TICKER ON UI
+      this.stockInfo.ticker = '$' + ticker
 
       // OPEN PRICE
-      this.openPrice = Number(data[timeSeries][recentTime]['1. open']).toFixed(2)
-      this.ticker = '$' + ticker
+      this.stockInfo.openPrice = Number(data[timeSeries][recentTime]['1. open']).toFixed(2)
 
       // CLOSING PRICE MODIFICATION
-      this.closePrice = Number(data[timeSeries][recentTime]['4. close']).toFixed(2)
-
-      // HIGH PRICE HTML
-      this.highPrice = Number(data[timeSeries][recentTime]['2. high']).toFixed(2)
-
-      // LOW PRICE HTML
-      this.lowPrice = Number(data[timeSeries][recentTime]['3. low']).toFixed(2)
-
-      // TICKER VOLUME HTML
-      this.volume = Math.floor(Number(data[timeSeries][recentTime]['5. volume']).toFixed(2))
+      this.stockInfo.closePrice = Number(data[timeSeries][recentTime]['4. close']).toFixed(2)
 
       // LOWEST PRICE
-
       let minimum = Object.values(data['Time Series (5min)']).map((data) => Number(data['3. low']))
-
       let lowestPrice = Math.min(...minimum)
+      this.stockInfo.lowPrice = lowestPrice
 
-      this.lowPrice = lowestPrice
+      // HIGHEST PRICE
+      let maximum = Object.values(data['Time Series (5min)']).map((data) => Number(data['3. low']))
+      let highestPrice = Math.max(...maximum)
+      console.log(highestPrice)
+      this.stockInfo.highPrice = highestPrice
 
-      // remove error class 
+      // GET TOTAL VOLUME
+      let volume = Object.values(data['Time Series (5min)']).map((data) => Number(data['5. volume']))
+      const totalVolume = volume.reduce((acc, volume) => {
+        return acc + volume
+      }, 0)
+
+      this.stockInfo.volume = totalVolume
+
+
+      // REMOVE ERROR CLASS AND LOAD THE INFO CONTAINER
       this.errorClass = false
-
       this.loadInfoContainer = true
-      
     },
-    // eslint-disable-next-line no-unused-vars
     errorMessage(data) {
       console.error('This is an error try again "' + data + '"')
       this.errorClass = 'outline-error'
@@ -128,6 +122,7 @@ export default {
 </script>
 
 <style>
+
   /* GLOBAL STYLES */
   * {
     font-family: 'Nunito', sans-serif;
