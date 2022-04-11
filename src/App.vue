@@ -1,4 +1,9 @@
 <template>
+  <div class="tabs">
+    <button>Stocks</button>
+    <button>Crypto</button>
+  </div>
+  
   <div class="container">
     <!-- INPUT CONTAINER -->
     <InputSection 
@@ -15,8 +20,10 @@
     </div>
     <!-- ERROR CONTAINER -->
     <div v-else class="error-container">
-      <h1 class="default-text">Please enter valid ticker</h1>
-      <img v-if="isLoading" :src="loadingImage" alt="" style="width: 15%">
+      <ErrorPopup 
+        :isLoading="isLoading"
+        :loadingImage="loadingImage"
+      />
     </div>
   </div>
 </template>
@@ -24,6 +31,7 @@
 <script>
 import DataSection from '@/components/Data-section.vue'
 import InputSection from '@/components/Input-section.vue'
+import ErrorPopup from '@/components/Error-popup.vue'
 
 // GLOBAL VARIABLES
 const APIKEY = 'LTSY55G9R1CJFQ11'
@@ -32,7 +40,8 @@ export default {
   name: 'app',
   components: {
     DataSection,
-    InputSection
+    InputSection,
+    ErrorPopup
   },
   data () {
     return {
@@ -59,8 +68,8 @@ export default {
       fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
         .then((res) => res.json())
         .then((data) => this.getData(data))
-        .then(() => (this.isLoading = true))
-        .catch((err) =>  console.log(err))
+        // .then(() => (this.isLoading = true))
+        .catch((err) =>  this.errorMessage(err))
     },
     getData(data) {
       console.log('Request complete')
@@ -153,20 +162,5 @@ export default {
 
   .default-text {
     padding-bottom: 1em;
-  }
-
-  /* ERROR CONTAINER */
-
-  .error-container {
-    text-align: center;
-  }
-
-  .error-container h1 {
-    text-transform: uppercase;
-    color: #03254E
-  }
-
-  #outline-error {
-    border: 2px solid red;
   }
 </style>
