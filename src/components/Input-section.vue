@@ -1,7 +1,15 @@
 <template>
   <div class="input-container">
     <!-- INPUT AREA TO GENERATE -->
-    <input placeholder="Enter Ticker" class="input-element" name="name" type="text" :value="modelValue" @keyup.enter="$emit('lookUpSymbol')" @input="$emit('update:modelValue', $event.target.value)" :id="errorClass"> 
+    <input 
+    placeholder="Enter Ticker" 
+    class="input-element" 
+    name="name" type="text" 
+    :value="modelValue" 
+    :id="errorClass"
+    @keyup.enter="$emit('lookUpSymbol')" 
+    @input="$emit('update:modelValue', $event.target.value)" 
+    > 
     <!-- BUTTON TO GENERATE -->
     <button @click="fetchData">Generate</button>
   </div>
