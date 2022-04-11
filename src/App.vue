@@ -26,6 +26,11 @@
       />
     </div>
   </div>
+  <div class="recently-viewed">
+    <div class="area-one">one</div>
+    <div class="area-two">two</div>
+    <div class="area-three">three</div>
+  </div>
 </template>
 
 <script>
@@ -197,5 +202,23 @@ export default {
 
   .crypto-button {
     border-left: 1px solid #03254E;
+  }
+
+  /* RECENTLY VIEWED AREA */
+
+  .recently-viewed {
+    display: grid;
+    text-align: center;
+
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 1em;
+  }
+
+  .area-one, .area-two, .area-three {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #E7F0FF;
+    height: 200px;
   }
 </style>
