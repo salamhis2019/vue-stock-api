@@ -26,9 +26,20 @@
   </div>
   <p class="recent-text">Recently Viewed</p>
   <div class="recently-viewed">
-    <div class="area-one">one</div>
-    <div class="area-two">two</div>
-    <div class="area-three">three</div>
+    <div 
+      class="recent-container" 
+      v-for="(info,i) in recentlyViewed" 
+      :key="info.id"
+    >
+      <div class="recent-header">
+        <h1 class="recently-viewed-ticker">{{ info.ticker }}</h1>
+        <i class="material-icons" @click="deleteRecent(i)">close</i>
+      </div>
+      <div class="recent-info-container">
+        <p>Open: {{ info.open }}</p>
+        <p>Close: {{ info.close }}</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -49,6 +60,7 @@ export default {
   },
   data () {
     return {
+      // DATA FOR STOCK INFO
       symbol: '',
       stockInfo: {
         openPrice: '',
@@ -58,11 +70,19 @@ export default {
         volume: '',
         ticker: '',
       },
-      loadingUrl: '',
+      // DATA FOR UI ELEMENTS LOADING
       loadInfoContainer: false,
       isLoading: false,
       errorClass: false,
-      loadingImage: require('../src/images/loading.gif')
+      loadingImage: require('../src/images/loading.gif'),
+      // DATA RELATED TO RECENTLY VIEWED SECTION IN UI
+      recentlyViewed: [
+        {
+          ticker: 'apple',
+          open: '100', 
+          close: '100'
+        }
+      ],
     }
   }, 
   methods: {
@@ -72,12 +92,11 @@ export default {
       fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
         .then((res) => res.json())
         .then((data) => this.getData(data))
-        // .then(() => (this.isLoading = true))
+        .then(() => (this.isLoading = true))
         .catch((err) =>  this.errorMessage(err))
     },
     getData(data) {
-      console.log('Request complete')
-      console.log(data)
+      this.loadInfoContainer = true
       // CLEAR INPUT FIELD
       this.symbol = ""
 
@@ -117,10 +136,23 @@ export default {
 
       this.stockInfo.volume = totalVolume
 
+      // ADDING RECENTLY VIEWED AREA
+      if (this.recentlyViewed.length < 3) {
+        this.recentlyViewed.push({
+          id: new Date().valueOf(),
+          ticker: this.stockInfo.ticker,
+          open: this.stockInfo.openPrice,
+          close: this.stockInfo.closePrice
+        })
+      } 
+
 
       // REMOVE ERROR CLASS AND LOAD THE INFO CONTAINER
       this.errorClass = false
-      this.loadInfoContainer = true
+
+      this.userInputSymbol = ""
+
+      console.log(this.recentlyViewed.length)
     },
     errorMessage(data) {
       console.error('This is an error try again "' + data + '"')
@@ -129,6 +161,9 @@ export default {
 
       this.symbol = ""
       this.loadInfoContainer = false
+    }, 
+    deleteRecent(i) {
+      this.recentlyViewed.splice(i,1)
     }
   }
 }
@@ -204,7 +239,6 @@ export default {
   }
 
   /* RECENTLY VIEWED AREA */
-
   .recent-text {
     color: #E7F0FF;
     text-align: center;
@@ -221,11 +255,39 @@ export default {
     column-gap: 1em;
   }
 
-  .area-one, .area-two, .area-three {
+  .recent-container {
+    box-sizing: border-box;
+    height: 225px;
+    padding: 1em;
+
+    background-color: #03254E;
+    box-shadow: 4px 4px #E7F0FF;
+    color: #E7F0FF;
+  }
+
+  .recent-header {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-    background-color: #dadada;
-    height: 200px;
+    height: 75px;
+  }
+
+  .recently-viewed-ticker {
+    font-family: 'Oxygen', sans-serif;
+    font-weight: 300;
+  }
+
+  .material-icons {
+    font-size: 36px;
+    cursor: pointer;
+  }
+
+  .recent-info-container {
+    text-align: left;
+    padding-left: 2.1em;
+  }
+
+  .recent-info-container p {
+    font-size: 1.2em;
   }
 </style>
