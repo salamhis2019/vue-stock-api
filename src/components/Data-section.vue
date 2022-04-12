@@ -17,7 +17,8 @@
 
 export default {
   name: 'DataSection',
-  props: ['stockInfo']
+  props: ['stockInfo'],
+  computed: {}
 }
 </script>
 

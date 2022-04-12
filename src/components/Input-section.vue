@@ -1,7 +1,6 @@
 <template>
   <div class="input-container">
     <!-- INPUT AREA TO GENERATE -->
-    <!-- START OF EDITS -->
     <input 
     placeholder="Enter Ticker" 
     class="input-element" 

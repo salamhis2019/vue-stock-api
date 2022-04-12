@@ -3,7 +3,6 @@
     <button class="stocks-button">Stocks</button>
     <button class="crypto-button">Crypto</button>
   </div>
-
   <div class="container">
     <!-- INPUT CONTAINER -->
     <InputSection 
@@ -28,7 +27,7 @@
   <div class="recently-viewed">
     <div 
       class="recent-container" 
-      v-for="(info,i) in recentlyViewed" 
+      v-for="(info, i) in recentlyViewed" 
       :key="info.id"
     >
       <div class="recent-header">
@@ -76,15 +75,9 @@ export default {
       errorClass: false,
       loadingImage: require('../src/images/loading.gif'),
       // DATA RELATED TO RECENTLY VIEWED SECTION IN UI
-      recentlyViewed: [
-        {
-          ticker: 'apple',
-          open: '100', 
-          close: '100'
-        }
-      ],
+      recentlyViewed: [],
     }
-  }, 
+  },
   methods: {
     fetchApi (userInputSymbol) {
       this.isLoading = true
@@ -162,6 +155,7 @@ export default {
       this.symbol = ""
       this.loadInfoContainer = false
     }, 
+    // DELETE RECENTLY VIEWED ITEM FROM DOM
     deleteRecent(i) {
       this.recentlyViewed.splice(i,1)
     }
@@ -239,6 +233,7 @@ export default {
   }
 
   /* RECENTLY VIEWED AREA */
+
   .recent-text {
     color: #E7F0FF;
     text-align: center;
@@ -260,7 +255,8 @@ export default {
     height: 225px;
     padding: 1em;
 
-    background-color: #03254E;
+    background: rgb(3,37,78);
+    background: radial-gradient(circle, #1097f7 0%, #03254E 97%);
     box-shadow: 4px 4px #E7F0FF;
     color: #E7F0FF;
   }
@@ -280,6 +276,17 @@ export default {
   .material-icons {
     font-size: 36px;
     cursor: pointer;
+
+    transition: 0.3s ease;
+  }
+
+  .material-icons:hover {
+    color: #3d3d3d;
+  }
+
+  .material-icons:active {
+    transform: translateY(-1px);
+    transform: translatex(-1px);
   }
 
   .recent-info-container {
