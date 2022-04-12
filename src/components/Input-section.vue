@@ -1,14 +1,14 @@
 <template>
   <div class="input-container">
     <!-- INPUT AREA TO GENERATE -->
+    <!-- START OF EDITS -->
     <input 
     placeholder="Enter Ticker" 
     class="input-element" 
     name="name" type="text" 
-    :value="modelValue" 
     :id="errorClass"
-    @keyup.enter="$emit('lookUpSymbol')" 
-    @input="$emit('update:modelValue', $event.target.value)" 
+    v-model="symbol"
+    @keyup.enter="fetchData"
     > 
     <!-- BUTTON TO GENERATE -->
     <button @click="fetchData">Generate</button>
@@ -19,7 +19,17 @@
 
 export default {
   name: "InputSection",
-  props: ['modelValue', 'errorClass', 'symbol']
+  props: ['errorClass'],
+  data () {
+    return {
+      symbol: ''
+    }
+  }, 
+  methods: {
+    fetchData() {
+      this.$emit('fetchApi', this.symbol)
+    }
+  }
 }
 
 </script>

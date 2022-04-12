@@ -7,9 +7,7 @@
   <div class="container">
     <!-- INPUT CONTAINER -->
     <InputSection 
-      @lookUpSymbol="fetchApi()"
-      @update:modelValue="value => symbol = value"
-      v-model="symbol"
+      @fetchApi="fetchApi"
       :errorClass="errorClass"
     />
     <!-- CONTENT LOADED IF THE FETCH IS SUCCESSFUL -->
@@ -26,6 +24,7 @@
       />
     </div>
   </div>
+  <p class="recent-text">Recently Viewed</p>
   <div class="recently-viewed">
     <div class="area-one">one</div>
     <div class="area-two">two</div>
@@ -67,9 +66,9 @@ export default {
     }
   }, 
   methods: {
-    fetchApi () {
+    fetchApi (userInputSymbol) {
       this.isLoading = true
-      const ticker = this.symbol.toUpperCase()
+      const ticker = userInputSymbol.toUpperCase()
       fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
         .then((res) => res.json())
         .then((data) => this.getData(data))
@@ -206,6 +205,14 @@ export default {
 
   /* RECENTLY VIEWED AREA */
 
+  .recent-text {
+    color: #E7F0FF;
+    text-align: center;
+
+    font-size: 1.5em;
+    font-weight: 600;
+  }
+
   .recently-viewed {
     display: grid;
     text-align: center;
@@ -218,7 +225,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #E7F0FF;
+    background-color: #dadada;
     height: 200px;
   }
 </style>
