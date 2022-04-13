@@ -82,7 +82,8 @@ export default {
 
       return data
     },
-    showData(data) {      
+    showData(data) { 
+      console.log(data)     
       document.body.classList.add('crypto')
       // SHOW THE DATA CONTAINER
 
