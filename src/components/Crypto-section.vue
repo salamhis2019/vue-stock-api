@@ -154,6 +154,22 @@ export default {
   .error-container {
     text-align: center;
   }
+
+  .crypto-container {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 1em;
+    height: 200px;
+    max-width: 900px;
+
+    margin: 2em auto;
+    padding: 1em;
+
+    background: linear-gradient(to left, #1098f7, #03254E);
+    color: #E7F0FF;
+  }
+  
   /* CONTAINER STYLES */
   .container {
     box-sizing: border-box;

@@ -182,22 +182,7 @@ export default {
     margin: 2em auto;
     padding: 1em;
 
-    background: linear-gradient(to left, #10f723, #003805);
-    color: #E7F0FF;
-  }
-
-  .crypto-container {
-    box-sizing: border-box;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    row-gap: 1em;
-    height: 200px;
-    max-width: 900px;
-
-    margin: 2em auto;
-    padding: 1em;
-
-    background: linear-gradient(to left, #1098f7, #03254E);
+    background: linear-gradient(to left, #10ce1f, #003805);
     color: #E7F0FF;
   }
 
@@ -238,7 +223,7 @@ export default {
     padding: 1em;
 
     background: rgb(3,37,78);
-    background: radial-gradient(circle, #10f723 0%, #004906 85%);
+    background: radial-gradient(circle, #10ce1f 0%, #004906 85%);
     box-shadow: 4px 4px #E7F0FF;
     color: #E7F0FF;
   }
