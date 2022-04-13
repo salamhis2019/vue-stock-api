@@ -13,6 +13,10 @@ export default {
 <style>
   /* ERROR CONTAINER */
 
+  .default-text {
+    padding-bottom: 1em;
+  }
+
   .error-container {
     text-align: center;
   }
