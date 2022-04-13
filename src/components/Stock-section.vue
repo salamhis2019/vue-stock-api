@@ -85,6 +85,7 @@ export default {
         .catch((err) =>  this.errorMessage(err))
     },
     getData(data) {
+      this.loadInfoContainer = true
       // CLEAR INPUT FIELD
       this.symbol = ""
 

@@ -89,8 +89,8 @@ export default {
 
   .stocks-logo, .crypto-logo {
     position: absolute;
-    width: 100px;
-    bottom: 10px;
-    right: 20px;
+    width: 125px;
+    bottom: 50px;
+    right: 70px;
   }
 </style>
