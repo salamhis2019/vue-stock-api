@@ -1,9 +1,11 @@
 <template>
   <div class="tabs">
-    <button class="stocks-button" @click="component = 'StockSection'">Stocks</button>
-    <button class="crypto-button" @click="component = 'CryptoSection'">Crypto</button>
+    <button class="stocks-button" @click="chooseComponent('StockSection')">Stocks</button>
+    <button class="crypto-button" @click="chooseComponent('CryptoSection')">Crypto</button>
   </div>
   <component :is="component"></component>
+  <img v-if="component === 'StockSection'" class="crypto-logo" src="../src/images/stocks-logo.png" alt="">
+  <img v-else class="crypto-logo" src="../src/images/crypto-logo.png" alt="">
 </template>
 
 <script>
@@ -19,7 +21,7 @@ export default {
   },
   data () {
     return {
-      component: StockSection
+      component: 'StockSection',
     }
   },
   computed: {},
@@ -83,5 +85,12 @@ export default {
 
   .crypto-button {
     border-left: 1px solid #03254E;
+  }
+
+  .stocks-logo, .crypto-logo {
+    position: absolute;
+    width: 100px;
+    bottom: 10px;
+    right: 20px;
   }
 </style>

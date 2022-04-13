@@ -134,6 +134,16 @@ export default {
           close: this.stockInfo.closePrice
         })
       } 
+
+      if (this.recentlyViewed.length === 3) {
+        this.recentlyViewed.pop()
+        this.recentlyViewed.push({
+          id: new Date().valueOf(),
+          ticker: this.stockInfo.ticker,
+          open: this.stockInfo.openPrice,
+          close: this.stockInfo.closePrice
+        })
+      }
       // REMOVE ERROR CLASS AND LOAD THE INFO CONTAINER
       this.errorClass = false
 
