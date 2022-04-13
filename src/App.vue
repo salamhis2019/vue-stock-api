@@ -19,6 +19,7 @@ export default {
     StockSection,
     CryptoSection
   },
+  props: ['isLoading', 'loadingImage'],
   data () {
     return {
       component: 'StockSection',

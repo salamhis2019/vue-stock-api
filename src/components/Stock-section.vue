@@ -179,6 +179,11 @@ export default {
     background-color: #E7F0FF;
   }
 
+  /* ERROR CONTAINER */
+    .error-container {
+      text-align: center;
+    }
+
   /* RECENTLY VIEWED AREA */
   .recent-text {
     color: #E7F0FF;
