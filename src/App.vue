@@ -7,8 +7,17 @@
     <keep-alive>
       <component :is="component"></component>
     </keep-alive>
-    <img v-if="component === 'StockSection'" class="crypto-logo" src="../src/images/stocks-logo.png" alt="">
-    <img v-else class="crypto-logo" src="../src/images/crypto-logo.png" alt="">
+    <img 
+      v-if="component === 'StockSection'" class="crypto-logo" 
+      src="../src/images/stocks-logo.png" 
+      alt=""
+    >
+    <img 
+      v-else 
+      class="crypto-logo" 
+      src="../src/images/crypto-logo.png" 
+      alt=""
+    >
   </div>
 </template>
 
@@ -32,14 +41,22 @@ export default {
   methods: {
     chooseComponent(cmp) {
       this.component = cmp
-      console.log(this.component)
+      if (this.component !== 'StockSection') {
+        document.body.classList.add('crypto-background')
+      } else {
+        document.body.classList.remove('crypto-background')
+      }
     }
   }
 }
 </script>
 
 <style>
-
+  .crypto-background {
+    background: linear-gradient(to bottom, #1097f728, #03254ef1), url('./images/background.webp');
+    background-size: cover;
+    background-position: center;
+  }
   /* GLOBAL STYLES */
   * {
     font-family: 'Nunito', sans-serif;
@@ -51,7 +68,7 @@ export default {
     justify-content: center;
     min-height: 100vh;
 
-    background: linear-gradient(to bottom, #1097f728, #03254ef1), url('./images/background.webp');
+    background: linear-gradient(to bottom, #10f72328, #034e20f1), url('./images/Stock-background.jpg');
     background-size: cover;
     background-position: center;
   }

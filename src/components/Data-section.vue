@@ -23,7 +23,21 @@ export default {
 </script>
 
 <style>
-  .info-container {
+  .stock-container {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 1em;
+    height: 200px;
+    max-width: 900px;
+
+    margin: 2em auto;
+    padding: 1em;
+
+    background: linear-gradient(to left, #10f723, #004906);
+    color: #E7F0FF;
+  }
+  .crypto-container {
     box-sizing: border-box;
     display: grid;
     grid-template-columns: repeat(2, 1fr);

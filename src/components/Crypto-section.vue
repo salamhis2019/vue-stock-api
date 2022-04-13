@@ -3,7 +3,7 @@
     <InputSection 
       @fetchApi="fetchApi"
     />
-    <div v-if="loadInfoContainer" class="info-container" :id='errorClass'>
+    <div v-if="loadInfoContainer" :class="dataSectionStyle" :id='errorClass'>
       <DataSection 
         :fetchedInfo="cryptoInfo"
       />
@@ -66,6 +66,8 @@ export default {
       loadingImage: require('../images/loading.gif'),
       // DATA RELATED TO RECENTLY VIEWED SECTION IN UI
       recentlyViewed: [],
+      // DYNAMIC STYLING
+      dataSectionStyle: 'crypto-container'
     }
   },
   methods: {
@@ -76,10 +78,12 @@ export default {
       .then((data) => data.json())
       .then((res) => this.showData(res))
       .then(() => this.isLoading = false)
+      .catch((err) => this.errorMessage(err))
 
       return data
     },
     showData(data) {      
+      document.body.classList.add('crypto')
       // SHOW THE DATA CONTAINER
 
       this.loadInfoContainer = true
@@ -110,14 +114,14 @@ export default {
 
       this.cryptoInfo.volume = totalVolume
 
+      // PUSH RECENTS TO UI AND ADDING RECENLTY VIEWED AREA
       const recentData = {
         id: new Date().valueOf(),
         ticker: this.cryptoInfo.ticker,
         open: this.cryptoInfo.openPrice,
         close: this.cryptoInfo.closePrice
       }
-
-      // PUSH RECENTS TO UI AND ADDING RECENLTY VIEWED AREA
+      
       if (this.recentlyViewed.length < 3) {
         this.recentlyViewed.push(recentData)
       }
@@ -131,18 +135,26 @@ export default {
     },
     deleteRecent(i) {
       this.recentlyViewed.splice(i, 1)
-    }
+    },
+    errorMessage(data) {
+      console.error('This is an error try again "' + data + '"')
+      this.errorClass = 'outline-error'
+      console.log(this.symbol)
+
+      this.symbol = ""
+      this.loadInfoContainer = false
+    },
   },
 }
 </script>
 
-<style>
+<style scoped>
 
-/* ERROR CONTAINER STYLES */
-.error-container {
-  text-align: center;
-}
-/* CONTAINER STYLES */
+  /* ERROR CONTAINER STYLES */
+  .error-container {
+    text-align: center;
+  }
+  /* CONTAINER STYLES */
   .container {
     box-sizing: border-box;
     width: 900px;

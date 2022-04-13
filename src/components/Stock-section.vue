@@ -6,7 +6,7 @@
       :errorClass="errorClass"
     />
     <!-- CONTENT LOADED IF THE FETCH IS SUCCESSFUL -->
-    <div v-if="loadInfoContainer" class="info-container" :id='errorClass'>
+    <div v-if="loadInfoContainer" :class="dataSectionStyle" :id='errorClass'>
       <DataSection 
         :fetchedInfo="stockInfo"
       />
@@ -72,6 +72,8 @@ export default {
       loadingImage: require('../images/loading.gif'),
       // DATA RELATED TO RECENTLY VIEWED SECTION IN UI
       recentlyViewed: [],
+      // DYNAMIC STYLES
+      dataSectionStyle: 'stock-container'
     }
   },
   methods: {
@@ -128,24 +130,22 @@ export default {
       this.stockInfo.volume = totalVolume
 
       // ADDING RECENTLY VIEWED AREA
+      const recentData = {
+        id: new Date().valueOf(),
+        ticker: this.stockInfo.ticker,
+        open: this.stockInfo.openPrice,
+        close: this.stockInfo.closePrice
+      }
+
       if (this.recentlyViewed.length < 3) {
-        this.recentlyViewed.push({
-          id: new Date().valueOf(),
-          ticker: this.stockInfo.ticker,
-          open: this.stockInfo.openPrice,
-          close: this.stockInfo.closePrice
-        })
+        this.recentlyViewed.push(recentData)
       } 
 
       if (this.recentlyViewed.length === 3) {
         this.recentlyViewed.pop()
-        this.recentlyViewed.push({
-          id: new Date().valueOf(),
-          ticker: this.stockInfo.ticker,
-          open: this.stockInfo.openPrice,
-          close: this.stockInfo.closePrice
-        })
+        this.recentlyViewed.push(recentData)
       }
+
       // REMOVE ERROR CLASS AND LOAD THE INFO CONTAINER
       this.errorClass = false
 
@@ -170,7 +170,38 @@ export default {
 </script>
 
 <style scoped>
-  /* CONTAINER STYLES */
+  /* DATA CONTAINER STYLES */
+    .stock-container {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 1em;
+    height: 200px;
+    max-width: 900px;
+
+    margin: 2em auto;
+    padding: 1em;
+
+    background: linear-gradient(to left, #10f723, #003805);
+    color: #E7F0FF;
+  }
+
+  .crypto-container {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 1em;
+    height: 200px;
+    max-width: 900px;
+
+    margin: 2em auto;
+    padding: 1em;
+
+    background: linear-gradient(to left, #1098f7, #03254E);
+    color: #E7F0FF;
+  }
+
+  /* MAIN CONTAINER STYLES */
   .container {
     box-sizing: border-box;
     width: 900px;
@@ -207,7 +238,7 @@ export default {
     padding: 1em;
 
     background: rgb(3,37,78);
-    background: radial-gradient(circle, #1097f7 0%, #03254E 97%);
+    background: radial-gradient(circle, #10f723 0%, #004906 85%);
     box-shadow: 4px 4px #E7F0FF;
     color: #E7F0FF;
   }
