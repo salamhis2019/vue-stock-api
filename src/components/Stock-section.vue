@@ -81,13 +81,14 @@ export default {
       fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
         .then((res) => res.json())
         .then((data) => this.getData(data))
-        .then(() => (this.isLoading = true))
+        .then(() => (this.isLoading = false))
         .catch((err) =>  this.errorMessage(err))
     },
     getData(data) {
-      this.loadInfoContainer = true
       // CLEAR INPUT FIELD
       this.symbol = ""
+
+      this.isLoading = false
 
       // SET CONTAINER TO SHOW WHEN THE API IS SUCCESSFULLY FETCHED
       const metaData = Object.keys(data)[0]
