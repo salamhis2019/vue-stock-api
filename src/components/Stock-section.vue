@@ -8,7 +8,7 @@
     <!-- CONTENT LOADED IF THE FETCH IS SUCCESSFUL -->
     <div v-if="loadInfoContainer" class="info-container" :id='errorClass'>
       <DataSection 
-        :stockInfo="stockInfo"
+        :fetchedInfo="stockInfo"
       />
     </div>
     <!-- ERROR CONTAINER -->
@@ -169,7 +169,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   /* CONTAINER STYLES */
   .container {
     box-sizing: border-box;

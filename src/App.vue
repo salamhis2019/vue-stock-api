@@ -1,11 +1,15 @@
 <template>
-  <div class="tabs">
-    <button class="stocks-button" @click="chooseComponent('StockSection')">Stocks</button>
-    <button class="crypto-button" @click="chooseComponent('CryptoSection')">Crypto</button>
+  <div class="hero-container">
+    <div class="tabs">
+      <button class="stocks-button" @click="chooseComponent('StockSection')">Stocks</button>
+      <button class="crypto-button" @click="chooseComponent('CryptoSection')">Crypto</button>
+    </div>
+    <keep-alive>
+      <component :is="component"></component>
+    </keep-alive>
+    <img v-if="component === 'StockSection'" class="crypto-logo" src="../src/images/stocks-logo.png" alt="">
+    <img v-else class="crypto-logo" src="../src/images/crypto-logo.png" alt="">
   </div>
-  <component :is="component"></component>
-  <img v-if="component === 'StockSection'" class="crypto-logo" src="../src/images/stocks-logo.png" alt="">
-  <img v-else class="crypto-logo" src="../src/images/crypto-logo.png" alt="">
 </template>
 
 <script>

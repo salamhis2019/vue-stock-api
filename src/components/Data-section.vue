@@ -1,14 +1,14 @@
 <template>
   <div class="cell">
     <span class="description">Ticker: </span>
-    <h1 class="ticker">{{ stockInfo.ticker }}</h1>
+    <h1 class="ticker">{{ fetchedInfo.ticker }}</h1>
   </div>
   <div class="cell2">
-    <span class="description">Open: </span><span class="data">{{ stockInfo.openPrice }}</span>
-    <span class="description">Close: </span><span class="data">{{ stockInfo.closePrice }}</span>
-    <span class="description">High: </span><span class="data">{{ stockInfo.highPrice }}</span>
-    <span class="description">Low: </span><span class="data">{{ stockInfo.lowPrice }}</span>
-    <span class="description">Volume: </span><span class="data">{{ stockInfo.volume }}</span>
+    <span class="description">Open: </span><span class="data">{{ fetchedInfo.openPrice }}</span>
+    <span class="description">Close: </span><span class="data">{{ fetchedInfo.closePrice }}</span>
+    <span class="description">High: </span><span class="data">{{ fetchedInfo.highPrice }}</span>
+    <span class="description">Low: </span><span class="data">{{ fetchedInfo.lowPrice }}</span>
+    <span class="description">Volume: </span><span class="data">{{ fetchedInfo.volume }}</span>
   </div>
 </template>
 
@@ -16,8 +16,8 @@
 
 
 export default {
-  name: 'DataSection',
-  props: ['stockInfo'],
+  name: 'StockData',
+  props: ['fetchedInfo'],
   computed: {}
 }
 </script>
