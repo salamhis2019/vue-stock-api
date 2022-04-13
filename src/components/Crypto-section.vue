@@ -171,6 +171,7 @@ export default {
   }
   
   /* CONTAINER STYLES */
+
   .container {
     box-sizing: border-box;
     width: 900px;
@@ -180,9 +181,9 @@ export default {
   }
 
   /* ERROR CONTAINER */
-    .error-container {
-      text-align: center;
-    }
+  .error-container {
+    text-align: center;
+  }
 
   /* RECENTLY VIEWED AREA */
   .recent-text {
@@ -191,6 +192,19 @@ export default {
 
     font-size: 1.5em;
     font-weight: 600;
+  }
+  
+  .recent-text {
+    display: flex;
+    flex-direction: row;
+  }
+          
+  .recent-text:before,
+  .recent-text:after {
+    content: "";
+    flex: 1 1;
+    border-bottom: 2px solid rgb(255, 255, 255);
+    margin: auto;
   }
 
   .recently-viewed {

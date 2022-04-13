@@ -201,6 +201,20 @@ export default {
     }
 
   /* RECENTLY VIEWED AREA */
+
+  .recent-text {
+    display: flex;
+    flex-direction: row;
+  }
+          
+  .recent-text:before,
+  .recent-text:after {
+    content: "";
+    flex: 1 1;
+    border-bottom: 2px solid rgb(255, 255, 255);
+    margin: auto;
+  }
+
   .recent-text {
     color: #E7F0FF;
     text-align: center;
