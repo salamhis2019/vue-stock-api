@@ -1,5 +1,5 @@
 <template>
-  <h1 class="default-text">Please enter valid ticker</h1>
+  <h1 class="default-stock-text">Please enter valid ticker</h1>
   <img v-if="isLoading" :src="loadingImage" alt="" style="width: 15%">
 </template>
 
@@ -12,10 +12,10 @@ export default {
 
 <style scoped>
   /* ERROR CONTAINER */
-
-  .default-text {
+  .default-stock-text {
     padding-bottom: 1em;
-  }
+    color: #003805
+  }   
 
   .error-container {
     text-align: center;

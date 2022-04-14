@@ -100,12 +100,18 @@ export default {
     background-color: #ececec;
   }
 
-  .stocks-button {
-    border-right: 1px solid #03254E;
+  .stocks-button:focus {
+    background-color: green;
+    color: #E7F0FF;
   }
 
   .crypto-button {
     border-left: 1px solid #03254E;
+  }
+
+  .crypto-button:active {
+    background-color: #03254E;
+    color: #E7F0FF;
   }
 
   .stocks-logo, .crypto-logo {

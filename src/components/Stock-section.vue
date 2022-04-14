@@ -69,7 +69,7 @@ export default {
       loadInfoContainer: false,
       isLoading: false,
       errorClass: false,
-      loadingImage: require('../images/stock.gif'),
+      loadingImage: require('../images/loading.gif'),
       // DATA RELATED TO RECENTLY VIEWED SECTION IN UI
       recentlyViewed: [],
       // DYNAMIC STYLES
