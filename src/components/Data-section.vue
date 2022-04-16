@@ -1,31 +1,60 @@
 <template>
-  <div class="cell">
-    <span class="description">Ticker: </span>
-    <h1 class="ticker">{{ fetchedInfo.ticker }}</h1>
+  <div v-if="loadInfoContainer && !isLoading && !stockLoadingError" :class="dataSectionStyle">
+    <div  class="cell">
+      <span class="description">Ticker: </span>
+      <h1 class="ticker">{{ fetchedInfo.ticker }}</h1>
+    </div>
+    <div class="cell2">
+      <span class="description">Open: </span><span class="data">{{ fetchedInfo.openPrice }}</span>
+      <span class="description">Close: </span><span class="data">{{ fetchedInfo.closePrice }}</span>
+      <span class="description">High: </span><span class="data">{{ fetchedInfo.highPrice }}</span>
+      <span class="description">Low: </span><span class="data">{{ fetchedInfo.lowPrice }}</span>
+      <span class="description">Volume: </span><span class="data">{{ fetchedInfo.volume }}</span>
+    </div>
   </div>
-  <div class="cell2">
-    <span class="description">Open: </span><span class="data">{{ fetchedInfo.openPrice }}</span>
-    <span class="description">Close: </span><span class="data">{{ fetchedInfo.closePrice }}</span>
-    <span class="description">High: </span><span class="data">{{ fetchedInfo.highPrice }}</span>
-    <span class="description">Low: </span><span class="data">{{ fetchedInfo.lowPrice }}</span>
-    <span class="description">Volume: </span><span class="data">{{ fetchedInfo.volume }}</span>
+  <!-- LOADING INDICATOR -->
+  <div v-if="isLoading">
+    <LoadingIndicator 
+      :isLoading="isLoading"
+  />
   </div>
+    <!-- ERROR MESSAGE -->
+  <ErrorMessage v-if="stockLoadingError">Please enter valid ticker</ErrorMessage>
 </template>
 
 <script>
-
+import LoadingIndicator from '@/components/Loading-indicator.vue'
+import ErrorMessage from '@/components/Error-message.vue'
 
 export default {
+  
   name: 'StockData',
-  props: ['fetchedInfo'],
-  computed: {}
+  props: ['fetchedInfo', 'stockLoadingError', 'isLoading', 'loadInfoContainer', 'dataSectionStyle'],
+  components: {
+    LoadingIndicator,
+    ErrorMessage
+  },
 }
 </script>
 
 <style>
+  /* DATA CONTAINER STYLES */
+    .stock-container {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 1em;
+    height: 200px;
+    max-width: 900px;
+
+    margin: 2em auto;
+    padding: 1em;
+
+    background: linear-gradient(to left, #10ce1f, #003805);
+    color: #E7F0FF;
+  }
 
   /* STYLES FOR THE OUTPUT */
-
   .description {
     text-align: left;
     font-family: 'Nunito', sans-serif;

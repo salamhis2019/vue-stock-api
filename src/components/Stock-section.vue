@@ -3,19 +3,15 @@
     <!-- INPUT CONTAINER -->
     <InputSection 
       @fetchApi="fetchApi"
-      :errorClass="errorClass"
     />
     <!-- CONTENT LOADED IF THE FETCH IS SUCCESSFUL -->
-    <div v-if="loadInfoContainer" :class="dataSectionStyle" :id='errorClass'>
+    <div>
       <DataSection 
         :fetchedInfo="stockInfo"
-      />
-    </div>
-    <!-- ERROR CONTAINER -->
-    <div v-else class="error-container">
-      <ErrorPopup 
         :isLoading="isLoading"
-        :loadingImage="loadingImage"
+        :stockLoadingError="stockLoadingError"
+        :loadInfoContainer="loadInfoContainer"
+        :dataSectionStyle="dataSectionStyle"
       />
     </div>
   </div>
@@ -42,7 +38,6 @@
 
 import DataSection from '@/components/Data-section.vue'
 import InputSection from '@/components/Input-section.vue'
-import ErrorPopup from '@/components/Error-popup.vue'
 
 const APIKEY = 'LTSY55G9R1CJFQ11'
 
@@ -51,8 +46,7 @@ export default {
   components: {
     DataSection,
     InputSection,
-    ErrorPopup
-  },
+},
   data () {
     return {
       // DATA FROM API
@@ -69,9 +63,8 @@ export default {
       },
       // DATA FOR UI ELEMENTS LOADING
       loadInfoContainer: false,
+      stockLoadingError: false,
       isLoading: false,
-      errorClass: false,
-      loadingImage: require('../images/loading.gif'),
       // DATA RELATED TO RECENTLY VIEWED SECTION IN UI
       recentlyViewed: [],
       // DYNAMIC STYLES
@@ -89,6 +82,7 @@ export default {
   },
   methods: {
     fetchApi (userInputSymbol) {
+      this.stockLoadingError = false
       this.isLoading = true
       const ticker = userInputSymbol.toUpperCase()
       fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
@@ -160,20 +154,16 @@ export default {
       //   this.recentlyViewed.push(recentData)
       // }
 
-      // REMOVE ERROR CLASS AND LOAD THE INFO CONTAINER
-      this.errorClass = false
-
       this.userInputSymbol = ""
 
       console.log(this.recentlyViewed.length)
     },
     errorMessage(data) {
       console.error('This is an error try again "' + data + '"')
-      this.errorClass = 'outline-error'
       console.log(this.symbol)
 
       this.symbol = ""
-      this.loadInfoContainer = false
+      this.stockLoadingError = true
     }, 
     // DELETE RECENTLY VIEWED ITEM FROM DOM
     deleteRecent(i) {
@@ -184,22 +174,6 @@ export default {
 </script>
 
 <style scoped>
-  /* DATA CONTAINER STYLES */
-    .stock-container {
-    box-sizing: border-box;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    row-gap: 1em;
-    height: 200px;
-    max-width: 900px;
-
-    margin: 2em auto;
-    padding: 1em;
-
-    background: linear-gradient(to left, #10ce1f, #003805);
-    color: #E7F0FF;
-  }
-
   /* MAIN CONTAINER STYLES */
   .container {
     box-sizing: border-box;
@@ -208,11 +182,6 @@ export default {
     
     background-color: #E7F0FF;
   }
-
-  /* ERROR CONTAINER */
-    .error-container {
-      text-align: center;
-    }
 
   /* RECENTLY VIEWED AREA */
 

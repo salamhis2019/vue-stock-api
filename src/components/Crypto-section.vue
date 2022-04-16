@@ -10,7 +10,7 @@
     </div>
     <!-- ERROR CONTAINER -->
     <div v-else class="error-container">
-      <ErrorPopup 
+      <LoadingIndicator 
         :isLoading="isLoading"
         :loadingImage="loadingImage"
       />
@@ -37,7 +37,7 @@
 
 <script>
 import InputSection from '@/components/Input-section.vue'
-import ErrorPopup from '@/components/Error-popup.vue'
+import LoadingIndicator from '@/components/Loading-indicator.vue'
 import DataSection from '@/components/Data-section.vue'
 
 const APIKEY = 'LTSY55G9R1CJFQ11'
@@ -46,7 +46,7 @@ export default {
   name: 'CryptoSection',
   components: {
     InputSection,
-    ErrorPopup,
+    LoadingIndicator,
     DataSection
   },
   data () {
@@ -139,7 +139,6 @@ export default {
     },
     errorMessage(data) {
       console.error('This is an error try again "' + data + '"')
-      this.errorClass = 'outline-error'
       console.log(this.symbol)
 
       this.symbol = ""
