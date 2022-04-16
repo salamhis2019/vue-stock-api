@@ -55,6 +55,8 @@ export default {
   },
   data () {
     return {
+      // DATA FROM API
+      apiData: {},
       // DATA FOR STOCK INFO
       symbol: '',
       stockInfo: {
@@ -76,6 +78,15 @@ export default {
       dataSectionStyle: 'stock-container'
     }
   },
+  computed: {
+    currentTicker: function () {
+      const metaData =  Object.keys(this.apiData)[0]
+      return this.apiData[metaData]['2. symbol']
+    }, 
+    recentlyViewedItems: function () {
+      return [...this.recentlyViewed].reverse.splice(0, 3)
+    }
+  },
   methods: {
     fetchApi (userInputSymbol) {
       this.isLoading = true
@@ -87,7 +98,10 @@ export default {
         .catch((err) =>  this.errorMessage(err))
     },
     getData(data) {
-      console.log(data)
+      // console.log(data)
+      this.apiData = data
+      console.log(Object.values(this.apiData))
+
       this.loadInfoContainer = true
       // CLEAR INPUT FIELD
       this.symbol = ""
@@ -138,14 +152,13 @@ export default {
         close: this.stockInfo.closePrice
       }
 
-      if (this.recentlyViewed.length < 3) {
-        this.recentlyViewed.push(recentData)
-      } 
+      this.recentlyViewed.push(recentData)
 
-      if (this.recentlyViewed.length === 3) {
-        this.recentlyViewed.pop()
-        this.recentlyViewed.push(recentData)
-      }
+
+      // if (this.recentlyViewed.length === 3) {
+      //   this.recentlyViewed.pop()
+      //   this.recentlyViewed.push(recentData)
+      // }
 
       // REMOVE ERROR CLASS AND LOAD THE INFO CONTAINER
       this.errorClass = false
