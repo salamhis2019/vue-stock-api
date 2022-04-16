@@ -56,7 +56,7 @@ export default {
   data () {
     return {
       // DATA FROM API
-      apiData: {},
+      apiData: '',
       // DATA FOR STOCK INFO
       symbol: '',
       stockInfo: {
@@ -84,7 +84,7 @@ export default {
       return this.apiData[metaData]['2. symbol']
     }, 
     recentlyViewedItems: function () {
-      return [...this.recentlyViewed].reverse.splice(0, 3)
+      return [...this.recentlyViewed].reverse().splice(0, 3)
     }
   },
   methods: {
@@ -100,7 +100,6 @@ export default {
     getData(data) {
       // console.log(data)
       this.apiData = data
-      console.log(Object.values(this.apiData))
 
       this.loadInfoContainer = true
       // CLEAR INPUT FIELD
