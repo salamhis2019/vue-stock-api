@@ -9,11 +9,12 @@
     <div v-if="loadInfoContainer" :class="dataSectionStyle" :id='errorClass'>
       <DataSection 
         :fetchedInfo="stockInfo"
+        :apiMethodInfo="apiData"
       />
     </div>
     <!-- ERROR CONTAINER -->
     <div v-else class="error-container">
-      <ErrorPopup 
+      <LoadingIndicator 
         :isLoading="isLoading"
         :loadingImage="loadingImage"
       />
@@ -23,7 +24,7 @@
   <div class="recently-viewed">
     <div 
       class="recent-container" 
-      v-for="(info, i) in recentlyViewed" 
+      v-for="(info, i) in recentlyViewedItems" 
       :key="info.id"
     >
       <div class="recent-header">
@@ -42,7 +43,7 @@
 
 import DataSection from '@/components/Data-section.vue'
 import InputSection from '@/components/Input-section.vue'
-import ErrorPopup from '@/components/Error-popup.vue'
+import LoadingIndicator from '@/components/Loading-indicator.vue'
 
 const APIKEY = 'LTSY55G9R1CJFQ11'
 
@@ -51,7 +52,7 @@ export default {
   components: {
     DataSection,
     InputSection,
-    ErrorPopup
+    LoadingIndicator
   },
   data () {
     return {
@@ -84,7 +85,7 @@ export default {
       return this.apiData[metaData]['2. symbol']
     }, 
     recentlyViewedItems: function () {
-      return [...this.recentlyViewed].reverse().splice(0, 3)
+      return [...this.recentlyViewed].reverse().slice(0, 3)
     }
   },
   methods: {
@@ -95,7 +96,7 @@ export default {
         .then((res) => res.json())
         .then((data) => this.getData(data))
         .then(() => (this.isLoading = false))
-        .catch((err) =>  this.errorMessage(err))
+        .catch((err) => this.errorMessage(err))
     },
     getData(data) {
       // console.log(data)
@@ -153,30 +154,26 @@ export default {
 
       this.recentlyViewed.push(recentData)
 
-
-      // if (this.recentlyViewed.length === 3) {
-      //   this.recentlyViewed.pop()
-      //   this.recentlyViewed.push(recentData)
-      // }
-
       // REMOVE ERROR CLASS AND LOAD THE INFO CONTAINER
       this.errorClass = false
 
       this.userInputSymbol = ""
 
-      console.log(this.recentlyViewed.length)
+      console.log(this.recentlyViewedItems)
+      console.log(this.recentlyViewed)
+      // console.log({...this.recentlyViewedItems})
     },
     errorMessage(data) {
       console.error('This is an error try again "' + data + '"')
       this.errorClass = 'outline-error'
       console.log(this.symbol)
 
-      this.symbol = ""
+      this.ticker = ""
       this.loadInfoContainer = false
     }, 
     // DELETE RECENTLY VIEWED ITEM FROM DOM
-    deleteRecent(i) {
-      this.recentlyViewed.splice(i,1)
+    deleteRecent(id) {
+      this.recentlyViewed = this.recentlyViewed.filter(item => item.id !== id)
     }
   }
 }

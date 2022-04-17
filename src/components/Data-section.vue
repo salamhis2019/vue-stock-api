@@ -1,7 +1,7 @@
 <template>
   <div class="cell">
     <span class="description">Ticker: </span>
-    <h1 class="ticker">{{ fetchedInfo.ticker }}</h1>
+    <h1 class="ticker">{{ displayTicker }}</h1>
   </div>
   <div class="cell2">
     <span class="description">Open: </span><span class="data">{{ fetchedInfo.openPrice }}</span>
@@ -14,11 +14,15 @@
 
 <script>
 
-
 export default {
   name: 'StockData',
-  props: ['fetchedInfo'],
-  computed: {}
+  props: ['fetchedInfo', 'apiMethodInfo'],
+  computed: {
+    displayTicker: function() {
+      const metaData = Object.keys(this.apiMethodInfo)[0]
+      return '$' + Object.values(this.apiMethodInfo[metaData])[1]
+    }
+  }
 }
 </script>
 
