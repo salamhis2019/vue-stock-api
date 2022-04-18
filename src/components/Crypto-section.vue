@@ -225,6 +225,15 @@ export default {
     font-weight: 300;
   }
 
+  .recent-info-container {
+    text-align: left;
+    padding-left: 2.1em;
+  }
+
+  .recent-info-container p {
+    font-size: 1.2em;
+  }
+
   .material-icons {
     font-size: 36px;
     cursor: pointer;
@@ -239,14 +248,5 @@ export default {
   .material-icons:active {
     transform: translateY(-1px);
     transform: translatex(-1px);
-  }
-
-  .recent-info-container {
-    text-align: left;
-    padding-left: 2.1em;
-  }
-
-  .recent-info-container p {
-    font-size: 1.2em;
   }
 </style>

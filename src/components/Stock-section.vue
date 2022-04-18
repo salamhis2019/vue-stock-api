@@ -19,7 +19,7 @@
   <div class="recently-viewed">
     <div 
       class="recent-container" 
-      v-for="(info, i) in recentlyViewedItems" 
+      v-for="(info, i) in recentlyViewed" 
       :key="info.id"
     >
       <div class="recent-header">
@@ -75,9 +75,9 @@ export default {
       const metaData =  Object.keys(this.apiData)[0]
       return this.apiData[metaData]['2. symbol']
     }, 
-    recentlyViewedItems: function () {
-      return [...this.recentlyViewed].reverse().slice(0, 3)
-    }
+    // recentlyViewedItems: function () {
+    //   return [...this.recentlyViewed].reverse().slice(0, 3)
+    // }
   },
   methods: {
     fetchApi (userInputSymbol) {
@@ -148,11 +148,11 @@ export default {
 
       this.recentlyViewed.push(recentData)
 
+      this.recentlyViewed = this.recentlyViewed.reverse().splice(0, 3)
+
       this.userInputSymbol = ""
 
       console.log(this.recentlyViewedItems)
-      console.log(this.recentlyViewed)
-      // console.log({...this.recentlyViewedItems})
     },
     errorMessage(data) {
       console.error('This is an error try again "' + data + '"')
@@ -162,8 +162,8 @@ export default {
     }, 
 
     // DELETE RECENTLY VIEWED ITEM FROM DOM
-    deleteRecent(id) {
-      this.recentlyViewed = this.recentlyViewed.filter(item => item.id !== id)
+    deleteRecent(i) {
+      this.recentlyViewed.splice(i, 1)
     }
   }
 }
