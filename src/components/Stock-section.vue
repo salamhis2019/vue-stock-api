@@ -39,8 +39,6 @@
 import DataSection from '@/components/Data-section.vue'
 import InputSection from '@/components/Input-section.vue'
 
-const APIKEY = 'LTSY55G9R1CJFQ11'
-
 export default {
   name: 'stock-section',
   components: {
@@ -49,6 +47,7 @@ export default {
   },
   data () {
     return {
+      VUE_APP_APIKEY: process.env.VUE_APP_APIKEY,
       // DATA FROM API
       apiData: '',
       // DATA FOR STOCK INFO
@@ -82,6 +81,7 @@ export default {
   },
   methods: {
     fetchApi (userInputSymbol) {
+      const APIKEY = this.VUE_APP_APIKEY
 
       this.isLoading = true
       this.stockLoadingError = false
@@ -97,7 +97,7 @@ export default {
       this.apiData = data
 
       this.loadInfoContainer = true
-      
+
       this.symbol = ""
 
       this.isLoading = false
