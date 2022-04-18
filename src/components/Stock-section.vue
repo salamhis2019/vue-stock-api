@@ -50,6 +50,11 @@ export default {
       VUE_APP_APIKEY: process.env.VUE_APP_APIKEY,
       // DATA FROM API
       apiData: '',
+      apiInfo: {
+        timeSeries: null,
+        recentTime: null,
+        metaData: null
+      },
       // DATA FOR STOCK INFO
       symbol: '',
       stockInfo: {
@@ -71,18 +76,41 @@ export default {
     }
   },
   computed: {
-    currentTicker: function () {
-      const metaData =  Object.keys(this.apiData)[0]
-      return this.apiData[metaData]['2. symbol']
-    }, 
+    // THIS FUNCTION WAS NOT ABLE TO BE MANIPULATED WHEN ADDRESSED IN THE METHODS SECTION
+    // WILL REVISIT IMPLEMENTING THE RECENTLY VIEWED MANIPULATION IN THE FUTURE 
     // recentlyViewedItems: function () {
     //   return [...this.recentlyViewed].reverse().slice(0, 3)
     // }
+    tickerComputed: function () {
+      return '$' + this.apiData[this.apiInfo.metaData]['2. Symbol']
+    },
+    openPriceComputed: function () {  
+      return Number(this.apiData[this.apiInfo.timeSeries][this.apiInfo.recentTime]['1. open']).toFixed(2)
+    },
+    closePriceComputed: function () {
+      return Number(this.apiData[this.apiInfo.timeSeries][this.apiInfo.recentTime]['4. close']).toFixed(2)
+    },
+    lowestPriceComputed: function () {
+      let minimum = Object.values(this.apiData['Time Series (5min)']).map((data) => Number(data['3. low']))
+      let lowestPrice = Math.min(...minimum) 
+      return lowestPrice.toFixed(2)
+    },
+    highestPriceComputed: function () {
+      let maximum = Object.values(this.apiData['Time Series (5min)']).map((data) => Number(data['3. low']))
+      let highestPrice = Math.max(...maximum)
+      return highestPrice.toFixed(2)
+    },
+    totalVolumeComputed: function () {
+      let volume = Object.values(this.apiData['Time Series (5min)']).map((data) => Number(data['5. volume']))
+      const totalVolume = volume.reduce((acc, volume) => {
+        return acc + volume
+      }, 0)
+      return totalVolume
+    }
   },
   methods: {
     fetchApi (userInputSymbol) {
       const APIKEY = this.VUE_APP_APIKEY
-
       this.isLoading = true
       this.stockLoadingError = false
 
@@ -90,7 +118,7 @@ export default {
       fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
         .then((res) => res.json())
         .then((data) => this.getData(data))
-        // .then(() => (this.isLoading = false))
+        .then(() => (this.isLoading = false))
         .catch((err) => this.errorMessage(err))
     },
     getData(data) {
@@ -98,69 +126,53 @@ export default {
 
       this.loadInfoContainer = true
 
-      this.symbol = ""
-
       this.isLoading = false
 
-      // SET CONTAINER TO SHOW WHEN THE API IS SUCCESSFULLY FETCHED
-      const metaData = Object.keys(data)[0]
-      const ticker = data[metaData]['2. Symbol']
-
-      // GET PRICE FROM USER
+      // EQUATIONS TO GET KEYS FROM API DATA FOR EASIER USAGE
       const timeSeries = Object.keys(data)[1]
-      const recentTime = Object.keys(data[timeSeries])[0]    
+      this.apiInfo.timeSeries = Object.keys(data)[1]
+      this.apiInfo.recentTime = Object.keys(data[timeSeries])[0]  
+      this.apiInfo.metaData = Object.keys(data)[0]
       
       // CHANGE TICKER ON UI
-      this.stockInfo.ticker = '$' + ticker
+      this.stockInfo.ticker = this.tickerComputed
 
       // OPEN PRICE
-      this.stockInfo.openPrice = Number(data[timeSeries][recentTime]['1. open']).toFixed(2)
+      this.stockInfo.openPrice = this.openPriceComputed
 
       // CLOSING PRICE MODIFICATION
-      this.stockInfo.closePrice = Number(data[timeSeries][recentTime]['4. close']).toFixed(2)
+      this.stockInfo.closePrice = this.closePriceComputed
 
       // LOWEST PRICE
-      let minimum = Object.values(data['Time Series (5min)']).map((data) => Number(data['3. low']))
-      let lowestPrice = Math.min(...minimum)
-      this.stockInfo.lowPrice = lowestPrice
+      this.stockInfo.lowPrice = this.lowestPriceComputed
 
       // HIGHEST PRICE
-      let maximum = Object.values(data['Time Series (5min)']).map((data) => Number(data['3. low']))
-      let highestPrice = Math.max(...maximum)
-      console.log(highestPrice)
-      this.stockInfo.highPrice = highestPrice
+      this.stockInfo.highPrice = this.highestPriceComputed
 
       // GET TOTAL VOLUME
-      let volume = Object.values(data['Time Series (5min)']).map((data) => Number(data['5. volume']))
-      const totalVolume = volume.reduce((acc, volume) => {
-        return acc + volume
-      }, 0)
+      this.stockInfo.volume = this.totalVolumeComputed
 
-      this.stockInfo.volume = totalVolume
-
-      // ADDING RECENTLY VIEWED AREA
+      // ADDING RECENTLY VIEWED AREA AND PUSHING EMPTY ITEMS TO INSTANTIATED STACK
       const recentData = {
         id: new Date().valueOf(),
         ticker: this.stockInfo.ticker,
         open: this.stockInfo.openPrice,
         close: this.stockInfo.closePrice
       }
-
       this.recentlyViewed.push(recentData)
 
+      // REVERSE AND SPLICE STRING FOR RIGHT TO LEFT SEQUENTIAL VIEW ON UI
       this.recentlyViewed = this.recentlyViewed.reverse().splice(0, 3)
 
       this.userInputSymbol = ""
-
-      console.log(this.recentlyViewedItems)
     },
+    // DISPLAY ERROR MESSAGE IF THE USER INPUT IS NOT VALID
     errorMessage(data) {
       console.error('This is an error try again "' + data + '"')
 
       this.ticker = ""
       this.stockLoadingError = true
     }, 
-
     // DELETE RECENTLY VIEWED ITEM FROM DOM
     deleteRecent(i) {
       this.recentlyViewed.splice(i, 1)
