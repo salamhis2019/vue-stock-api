@@ -109,17 +109,19 @@ export default {
     }
   },
   methods: {
-    fetchApi (userInputSymbol) {
+    async fetchApi (userInputSymbol) {
       const APIKEY = this.VUE_APP_APIKEY
       this.isLoading = true
       this.stockLoadingError = false
 
       const ticker = userInputSymbol.toUpperCase()
-      fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
-        .then((res) => res.json())
+      const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
+      const data = await response.json()
         .then((data) => this.getData(data))
         .then(() => (this.isLoading = false))
         .catch((err) => this.errorMessage(err))
+      
+      return data
     },
     getData(data) {
       this.apiData = data
@@ -128,19 +130,18 @@ export default {
 
       this.isLoading = false
 
-      // EQUATIONS TO GET KEYS FROM API DATA FOR EASIER USAGE
-      const timeSeries = Object.keys(data)[1]
+      // ASSIGNING EQUATIONS TO DATA TO GET EASIER ACCESS TO KEYS FROM THE API 
       this.apiInfo.timeSeries = Object.keys(data)[1]
-      this.apiInfo.recentTime = Object.keys(data[timeSeries])[0]  
+      this.apiInfo.recentTime = Object.keys(data[this.apiInfo.timeSeries])[0]  
       this.apiInfo.metaData = Object.keys(data)[0]
       
-      // CHANGE TICKER ON UI
+      // TICKER ON UI
       this.stockInfo.ticker = this.tickerComputed
 
       // OPEN PRICE
       this.stockInfo.openPrice = this.openPriceComputed
 
-      // CLOSING PRICE MODIFICATION
+      // CLOSING PRICE 
       this.stockInfo.closePrice = this.closePriceComputed
 
       // LOWEST PRICE
