@@ -3,25 +3,22 @@
     <InputSection 
       @fetchApi="fetchApi"
     />
-    <div v-if="loadInfoContainer" :class="dataSectionStyle" :id='errorClass'>
+    <div>
       <DataSection 
         :fetchedInfo="cryptoInfo"
         :apiMethodInfo="apiData"
-      />
-    </div>
-    <!-- ERROR CONTAINER -->
-    <div v-else class="error-container">
-      <LoadingIndicator 
         :isLoading="isLoading"
-        :loadingImage="loadingImage"
-      />
+        :stockLoadingError="stockLoadingError"
+        :loadInfoContainer="loadInfoContainer"
+        :dataSectionStyle="dataSectionStyle"
+      />      
     </div>
   </div>
   <p class="recent-text">Recently Viewed</p>
   <div class="recently-viewed">
     <div 
       class="recent-container"
-      v-for="(recent,i) in recentlyViewed"
+      v-for="(recent,i) in recentlyViewedItems"
       :key="recent.id"
     >
       <div class="recent-header">
@@ -37,8 +34,8 @@
 </template>
 
 <script>
+
 import InputSection from '@/components/Input-section.vue'
-import LoadingIndicator from '@/components/Loading-indicator.vue'
 import DataSection from '@/components/Data-section.vue'
 
 const APIKEY = 'LTSY55G9R1CJFQ11'
@@ -47,7 +44,6 @@ export default {
   name: 'CryptoSection',
   components: {
     InputSection,
-    LoadingIndicator,
     DataSection
   },
   data () {
@@ -63,18 +59,25 @@ export default {
       },
       // DATA FOR UI ELEMENTS LOADING
       loadInfoContainer: false,
+      stockLoadingError: false,
       isLoading: false,
-      errorClass: false,
-      loadingImage: require('../images/loading.gif'),
       // DATA RELATED TO RECENTLY VIEWED SECTION IN UI
       recentlyViewed: [],
       // DYNAMIC STYLING
       dataSectionStyle: 'crypto-container'
     }
   },
+  computed: {
+    recentlyViewedItems() {
+      return [...this.recentlyViewed].reverse().slice(0,3)
+    }
+  },
   methods: {
     async fetchApi (userInputSymbol) {
+
       this.isLoading = true
+      this.stockLoadingError = false
+
       const ticker = userInputSymbol.toUpperCase()
       const data = await fetch(`https://www.alphavantage.co/query?function=CRYPTO_INTRADAY&symbol=${ticker}&market=USD&interval=5min&apikey=${APIKEY}`)
       .then((data) => data.json())
@@ -86,10 +89,13 @@ export default {
     },
     showData(data) { 
       this.apiData = data
-      document.body.classList.add('crypto')
-      // SHOW THE DATA CONTAINER
 
       this.loadInfoContainer = true
+
+      this.isLoading = false
+
+      document.body.classList.add('crypto')
+      // SHOW THE DATA CONTAINER
       const metaData = Object.keys(data)[0]
       const timeSeries = Object.keys(data)[1]
       const recentTime = Object.keys(data[timeSeries])[0]
@@ -134,44 +140,21 @@ export default {
         this.recentlyViewed.push(recentData)
       }
 
-      console.log(totalVolume)
-    },
-    deleteRecent(i) {
-      this.recentlyViewed.splice(i, 1)
     },
     errorMessage(data) {
       console.error('This is an error try again "' + data + '"')
-      this.errorClass = 'outline-error'
-      console.log(this.symbol)
 
-      this.symbol = ""
-      this.loadInfoContainer = false
+      this.ticker = ""
+      this.stockLoadingError = true
+    },
+    deleteRecent(i) {
+      this.recentlyViewed.slice(i, 1)
     },
   },
 }
 </script>
 
 <style scoped>
-
-  /* ERROR CONTAINER STYLES */
-  .error-container {
-    text-align: center;
-  }
-
-  .crypto-container {
-    box-sizing: border-box;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    row-gap: 1em;
-    height: 200px;
-    max-width: 900px;
-
-    margin: 2em auto;
-    padding: 1em;
-
-    background: linear-gradient(to left, #1098f7, #03254E);
-    color: #E7F0FF;
-  }
   
   /* CONTAINER STYLES */
 

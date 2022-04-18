@@ -1,12 +1,25 @@
 <template>
-  <h1 class="default-stock-text">Please enter valid ticker</h1>
-  <img v-if="isLoading" :src="loadingImage" alt="" style="width: 15%">
+  <img v-if="isLoading" :src="loadingImage" class="loading-image" alt="">
 </template>
 
 <script>
 export default {
-  name: 'ErrorPopup',
-  props: ['isLoading', 'loadingImage']
+  name: 'LoadingIndicator',
+  props: ['isLoading', 'dataSectionStyle'],
+  data () {
+    return {
+      loadingImage: require('../images/loading.gif')
+    }
+  },
+  watch: {
+    changeImage() {
+      if (this.dataSectionStyle === 'crypto-container') {
+        this.loadingImage = 'require(\'.../images/loading.gif\')'
+      } else {
+        this.loadingImage = 'require(\'.../images/stocks.gif\')'
+      }
+     }
+  }
 }
 </script>
 
@@ -26,7 +39,7 @@ export default {
     color: #03254E
   }
 
-  #outline-error {
-    border: 2px solid red;
+  .loading-image {
+    width: 15%
   }
 </style>

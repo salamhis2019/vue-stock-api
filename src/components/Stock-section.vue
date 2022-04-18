@@ -3,20 +3,15 @@
     <!-- INPUT CONTAINER -->
     <InputSection 
       @fetchApi="fetchApi"
-      :errorClass="errorClass"
     />
-    <!-- CONTENT LOADED IF THE FETCH IS SUCCESSFUL -->
-    <div v-if="loadInfoContainer" :class="dataSectionStyle" :id='errorClass'>
+    <div>
       <DataSection 
         :fetchedInfo="stockInfo"
         :apiMethodInfo="apiData"
-      />
-    </div>
-    <!-- ERROR CONTAINER -->
-    <div v-else class="error-container">
-      <LoadingIndicator 
         :isLoading="isLoading"
-        :loadingImage="loadingImage"
+        :stockLoadingError="stockLoadingError"
+        :loadInfoContainer="loadInfoContainer"
+        :dataSectionStyle="dataSectionStyle"
       />
     </div>
   </div>
@@ -43,7 +38,6 @@
 
 import DataSection from '@/components/Data-section.vue'
 import InputSection from '@/components/Input-section.vue'
-import LoadingIndicator from '@/components/Loading-indicator.vue'
 
 const APIKEY = 'LTSY55G9R1CJFQ11'
 
@@ -52,7 +46,6 @@ export default {
   components: {
     DataSection,
     InputSection,
-    LoadingIndicator
   },
   data () {
     return {
@@ -70,9 +63,8 @@ export default {
       },
       // DATA FOR UI ELEMENTS LOADING
       loadInfoContainer: false,
+      stockLoadingError: false,
       isLoading: false,
-      errorClass: false,
-      loadingImage: require('../images/loading.gif'),
       // DATA RELATED TO RECENTLY VIEWED SECTION IN UI
       recentlyViewed: [],
       // DYNAMIC STYLES
@@ -90,20 +82,22 @@ export default {
   },
   methods: {
     fetchApi (userInputSymbol) {
+
       this.isLoading = true
+      this.stockLoadingError = false
+
       const ticker = userInputSymbol.toUpperCase()
       fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
         .then((res) => res.json())
         .then((data) => this.getData(data))
-        .then(() => (this.isLoading = false))
+        // .then(() => (this.isLoading = false))
         .catch((err) => this.errorMessage(err))
     },
     getData(data) {
-      // console.log(data)
       this.apiData = data
 
       this.loadInfoContainer = true
-      // CLEAR INPUT FIELD
+      
       this.symbol = ""
 
       this.isLoading = false
@@ -154,9 +148,6 @@ export default {
 
       this.recentlyViewed.push(recentData)
 
-      // REMOVE ERROR CLASS AND LOAD THE INFO CONTAINER
-      this.errorClass = false
-
       this.userInputSymbol = ""
 
       console.log(this.recentlyViewedItems)
@@ -165,12 +156,11 @@ export default {
     },
     errorMessage(data) {
       console.error('This is an error try again "' + data + '"')
-      this.errorClass = 'outline-error'
-      console.log(this.symbol)
 
       this.ticker = ""
-      this.loadInfoContainer = false
+      this.stockLoadingError = true
     }, 
+
     // DELETE RECENTLY VIEWED ITEM FROM DOM
     deleteRecent(id) {
       this.recentlyViewed = this.recentlyViewed.filter(item => item.id !== id)
@@ -181,7 +171,7 @@ export default {
 
 <style scoped>
   /* DATA CONTAINER STYLES */
-    .stock-container {
+  .stock-container {
     box-sizing: border-box;
     display: grid;
     grid-template-columns: repeat(2, 1fr);

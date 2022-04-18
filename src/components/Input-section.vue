@@ -5,7 +5,6 @@
     placeholder="Enter Ticker" 
     class="input-element" 
     name="name" type="text" 
-    :id="errorClass"
     v-model="symbol"
     @keyup.enter="fetchData"
     > 
@@ -18,7 +17,6 @@
 
 export default {
   name: "InputSection",
-  props: ['errorClass'],
   data () {
     return {
       symbol: ''
