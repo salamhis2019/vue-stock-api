@@ -79,12 +79,13 @@ export default {
       this.stockLoadingError = false
 
       const ticker = userInputSymbol.toUpperCase()
+      // FETCH DATA FROM STOCK API
       const response = await fetch(`https://www.alphavantage.co/query?function=CRYPTO_INTRADAY&symbol=${ticker}&market=USD&interval=5min&apikey=${APIKEY}`)
       const data = await response.json()
         .then((res) => this.showData(res))
         .then(() => this.isLoading = false)
         .catch((err) => this.errorMessage(err))
-
+        
       return data
     },
     showData(data) { 

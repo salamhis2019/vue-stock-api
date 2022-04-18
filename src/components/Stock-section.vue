@@ -91,21 +91,21 @@ export default {
       return Number(this.apiData[this.apiInfo.timeSeries][this.apiInfo.recentTime]['4. close']).toFixed(2)
     },
     lowestPriceComputed: function () {
-      let minimum = Object.values(this.apiData['Time Series (5min)']).map((data) => Number(data['3. low']))
+      let minimum = Object.values(this.apiData[this.apiInfo.timeSeries]).map((data) => Number(data['3. low']))
       let lowestPrice = Math.min(...minimum) 
       return lowestPrice.toFixed(2)
     },
     highestPriceComputed: function () {
-      let maximum = Object.values(this.apiData['Time Series (5min)']).map((data) => Number(data['3. low']))
+      let maximum = Object.values(this.apiData[this.apiInfo.timeSeries]).map((data) => Number(data['2. high']))
       let highestPrice = Math.max(...maximum)
       return highestPrice.toFixed(2)
     },
     totalVolumeComputed: function () {
-      let volume = Object.values(this.apiData['Time Series (5min)']).map((data) => Number(data['5. volume']))
+      let volume = Object.values(this.apiData[this.apiInfo.timeSeries]).map((data) => Number(data['5. volume']))
       const totalVolume = volume.reduce((acc, volume) => {
         return acc + volume
       }, 0)
-      return totalVolume
+      return totalVolume.toLocaleString()
     }
   },
   methods: {
@@ -115,6 +115,7 @@ export default {
       this.stockLoadingError = false
 
       const ticker = userInputSymbol.toUpperCase()
+      // FETCH DATA FROM STOCK API
       const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
       const data = await response.json()
         .then((data) => this.getData(data))
@@ -125,6 +126,7 @@ export default {
     },
     getData(data) {
       this.apiData = data
+      console.log(this.apiData)
 
       this.loadInfoContainer = true
 
