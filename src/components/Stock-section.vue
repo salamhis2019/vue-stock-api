@@ -23,7 +23,7 @@
       :key="info.id"
     >
       <div class="recent-header">
-        <h1 class="recently-viewed-ticker">{{ info.ticker }}</h1>
+        <p class="recently-viewed-ticker">{{ info.ticker }}</p>
         <i class="material-icons" @click="deleteRecent(i)">close</i>
       </div>
       <div class="recent-info-container">
@@ -250,6 +250,7 @@ export default {
   }
 
   .recently-viewed-ticker {
+    font-size: 2em;
     font-family: 'Oxygen', sans-serif;
     font-weight: 300;
   }
