@@ -22,7 +22,10 @@
         :dataSectionStyle="dataSectionStyle"
       />
     </div>
-    <ErrorMessage v-if="stockLoadingError">Please Enter Valid Ticker </ErrorMessage>
+    <ErrorMessage v-if="stockLoadingError">
+      <i class="material-icons" style="font-size:36px">error</i>
+      Please Enter Valid Ticker
+    </ErrorMessage>
   </div>
     
 

@@ -52,14 +52,16 @@ export default {
 </script>
 
 <style>
+  /* GLOBAL STYLES */
+  * {
+    font-family: 'Nunito', sans-serif;
+  }
+  
   .crypto-background {
     background: linear-gradient(to bottom, #1097f728, #03254ef1), url('./images/background.webp');
     background-size: cover;
     background-position: center;
-  }
-  /* GLOBAL STYLES */
-  * {
-    font-family: 'Nunito', sans-serif;
+    background-attachment: fixed;
   }
 
   body {
@@ -71,6 +73,7 @@ export default {
     background: linear-gradient(to bottom, #10f72328, #034e20f1), url('./images/Stock-background.jpg');
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
   }
 
   /* NAV AREA */

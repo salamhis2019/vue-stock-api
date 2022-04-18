@@ -22,6 +22,9 @@ export default {
   }
 
   .error-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 1.5em;
     font-weight: bold;
   }
