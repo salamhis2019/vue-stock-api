@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <base-card>
     <!-- INPUT CONTAINER -->
     <InputSection 
       @fetchApi="fetchApi"
@@ -14,7 +14,7 @@
         :dataSectionStyle="dataSectionStyle"
       />
     </div>
-  </div>
+  </base-card>
   <p class="recent-text">Recently Viewed</p>
   <div class="recently-viewed">
     <div 
@@ -157,7 +157,10 @@ export default {
         id: new Date().valueOf(),
         ticker: this.stockInfo.ticker,
         open: this.stockInfo.openPrice,
-        close: this.stockInfo.closePrice
+        close: this.stockInfo.closePrice,
+        high: this.stockInfo.highPrice,
+        low: this.stockInfo.lowPrice,
+        volume: this.stockInfo.volume
       }
       this.recentlyViewed.push(recentData)
 
@@ -182,31 +185,6 @@ export default {
 </script>
 
 <style scoped>
-  /* DATA CONTAINER STYLES */
-  .stock-container {
-    box-sizing: border-box;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    row-gap: 1em;
-    height: 200px;
-    max-width: 900px;
-
-    margin: 2em auto;
-    padding: 1em;
-
-    background: linear-gradient(to left, #10ce1f, #003805);
-    color: #E7F0FF;
-  }
-
-  /* MAIN CONTAINER STYLES */
-  .container {
-    box-sizing: border-box;
-    width: 900px;
-    margin: 0 auto;
-    
-    background-color: #E7F0FF;
-  }
-
   /* ERROR CONTAINER */
     .error-container {
       text-align: center;
