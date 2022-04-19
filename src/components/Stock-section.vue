@@ -126,10 +126,7 @@ export default {
     },
     getData(data) {
       this.apiData = data
-      console.log(this.apiData)
-
       this.loadInfoContainer = true
-
       this.isLoading = false
 
       // ASSIGNING EQUATIONS TO DATA TO GET EASIER ACCESS TO KEYS FROM THE API 

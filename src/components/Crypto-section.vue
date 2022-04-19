@@ -103,7 +103,6 @@ export default {
   },
   methods: {
     async fetchApi (userInputSymbol) {
-
       this.isLoading = true
       this.stockLoadingError = false
 
