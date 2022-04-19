@@ -15,35 +15,25 @@
       />
     </div>
   </base-card>
-  <p class="recent-text">Recently Viewed</p>
-  <div class="recently-viewed">
-    <div 
-      class="recent-container" 
-      v-for="(info, i) in recentlyViewed" 
-      :key="info.id"
-    >
-      <div class="recent-header">
-        <p class="recently-viewed-ticker">{{ info.ticker }}</p>
-        <i class="material-icons" @click="deleteRecent(i)">close</i>
-      </div>
-      <div class="recent-info-container">
-        <p>Open: {{ info.open }}</p>
-        <p>Close: {{ info.close }}</p>
-      </div>
-    </div>
-  </div>
+  <RecentlyViewedArea
+    :recentlyViewedArr="recentlyViewedItems"
+    :dataSectionStyle="dataSectionStyle"
+    :deleteRecent="deleteRecent"
+  />
 </template>
 
 <script>
 
 import DataSection from '@/components/Data-section.vue'
 import InputSection from '@/components/Input-section.vue'
+import RecentlyViewedArea from '@/components/recentlyViewed/Recently-viewed.vue'
 
 export default {
   name: 'stock-section',
   components: {
     DataSection,
     InputSection,
+    RecentlyViewedArea
   },
   data () {
     return {
@@ -78,9 +68,9 @@ export default {
   computed: {
     // THIS FUNCTION WAS NOT ABLE TO BE MANIPULATED WHEN ADDRESSED IN THE METHODS SECTION
     // WILL REVISIT IMPLEMENTING THE RECENTLY VIEWED MANIPULATION IN THE FUTURE 
-    // recentlyViewedItems: function () {
-    //   return [...this.recentlyViewed].reverse().slice(0, 3)
-    // }
+    recentlyViewedItems: function () {
+      return [...this.recentlyViewed].reverse().slice(0, 3)
+    },
     tickerComputed: function () {
       return '$' + this.apiData[this.apiInfo.metaData]['2. Symbol']
     },
@@ -165,7 +155,7 @@ export default {
       this.recentlyViewed.push(recentData)
 
       // REVERSE AND SPLICE STRING FOR RIGHT TO LEFT SEQUENTIAL VIEW ON UI
-      this.recentlyViewed = this.recentlyViewed.reverse().splice(0, 3)
+      // this.recentlyViewed.reverse().slice(0 ,3)
 
       this.userInputSymbol = ""
     },
@@ -186,87 +176,7 @@ export default {
 
 <style scoped>
   /* ERROR CONTAINER */
-    .error-container {
-      text-align: center;
-    }
-
-  /* RECENTLY VIEWED AREA */
-
-  .recent-text {
-    display: flex;
-    flex-direction: row;
-  }
-          
-  .recent-text:before,
-  .recent-text:after {
-    content: "";
-    flex: 1 1;
-    border-bottom: 2px solid rgb(255, 255, 255);
-    margin: auto;
-  }
-
-  .recent-text {
-    color: #E7F0FF;
+  .error-container {
     text-align: center;
-
-    font-size: 1.5em;
-    font-weight: 600;
-  }
-
-  .recently-viewed {
-    display: grid;
-    text-align: center;
-
-    grid-template-columns: repeat(3, 1fr);
-    column-gap: 1em;
-  }
-
-  .recent-container {
-    box-sizing: border-box;
-    height: 225px;
-    padding: 1em;
-
-    background: rgb(3,37,78);
-    background: radial-gradient(circle, #10ce1f 0%, #004906 85%);
-    box-shadow: 4px 4px #E7F0FF;
-    color: #E7F0FF;
-  }
-
-  .recent-header {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 75px;
-  }
-
-  .recently-viewed-ticker {
-    font-size: 2em;
-    font-family: 'Oxygen', sans-serif;
-    font-weight: 300;
-  }
-
-  .material-icons {
-    font-size: 36px;
-    cursor: pointer;
-
-    transition: 0.3s ease;
-  }
-
-  .material-icons:hover {
-    color: #3d3d3d;
-  }
-
-  .material-icons:active {
-    transform: translateY(-1px);
-    transform: translatex(-1px);
-  }
-
-  .recent-info-container {
-    text-align: left;
-    padding-left: 2.1em;
-  }
-
-  .recent-info-container p {
-    font-size: 1.2em;
   }
 </style>

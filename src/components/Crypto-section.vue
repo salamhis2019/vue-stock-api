@@ -14,35 +14,23 @@
       />      
     </div>
   </base-card>
-  <p class="recent-text">Recently Viewed</p>
-  <div class="recently-viewed">
-    <div 
-      class="recent-container"
-      v-for="(recent,i) in recentlyViewed"
-      :key="recent.id"
-    >
-      <div class="recent-header">
-        <p class="recently-viewed-ticker">{{ recent.ticker }}</p>
-        <i class="material-icons" @click="deleteRecent(i)">close</i>
-      </div>
-      <div class="recent-info-container">
-        <p>Open: {{ recent.open }}</p>
-        <p>Close: {{ recent.close }}</p>
-      </div>
-    </div>
-  </div>
+  <RecentlyViewedArea
+    :recentlyViewedArr="recentlyViewed"
+  />
 </template>
 
 <script>
 
 import InputSection from '@/components/Input-section.vue'
 import DataSection from '@/components/Data-section.vue'
+import RecentlyViewedArea from '@/components/recentlyViewed/Recently-viewed.vue'
 
 export default {
   name: 'CryptoSection',
   components: {
     InputSection,
-    DataSection
+    DataSection,
+    RecentlyViewedArea
   },
   data () {
     return {
@@ -174,84 +162,5 @@ export default {
   /* ERROR CONTAINER */
   .error-container {
     text-align: center;
-  }
-
-  /* RECENTLY VIEWED AREA */
-  .recent-text {
-    color: #E7F0FF;
-    text-align: center;
-
-    font-size: 1.5em;
-    font-weight: 600;
-  }
-  
-  .recent-text {
-    display: flex;
-    flex-direction: row;
-  }
-          
-  .recent-text:before,
-  .recent-text:after {
-    content: "";
-    flex: 1 1;
-    border-bottom: 2px solid rgb(255, 255, 255);
-    margin: auto;
-  }
-
-  .recently-viewed {
-    display: grid;
-    text-align: center;
-
-    grid-template-columns: repeat(3, 1fr);
-    column-gap: 1em;
-  }
-
-  .recent-container {
-    box-sizing: border-box;
-    height: 225px;
-    padding: 1em;
-
-    background: rgb(3,37,78);
-    background: radial-gradient(circle, #1097f7 0%, #03254E 97%);
-    box-shadow: 4px 4px #E7F0FF;
-    color: #E7F0FF;
-  }
-
-  .recent-header {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 75px;
-  }
-
-  .recently-viewed-ticker {
-    font-size: 2em;
-    font-family: 'Oxygen', sans-serif;
-    font-weight: 300;
-  }
-
-  .recent-info-container {
-    text-align: left;
-    padding-left: 2.1em;
-  }
-
-  .recent-info-container p {
-    font-size: 1.2em;
-  }
-
-  .material-icons {
-    font-size: 36px;
-    cursor: pointer;
-
-    transition: 0.3s ease;
-  }
-
-  .material-icons:hover {
-    color: #3d3d3d;
-  }
-
-  .material-icons:active {
-    transform: translateY(-1px);
-    transform: translatex(-1px);
   }
 </style>
