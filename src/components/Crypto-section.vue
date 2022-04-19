@@ -18,7 +18,7 @@
   <div class="recently-viewed">
     <div 
       class="recent-container"
-      v-for="(recent,i) in recentlyViewedItems"
+      v-for="(recent,i) in recentlyViewed"
       :key="recent.id"
     >
       <div class="recent-header">
@@ -38,8 +38,6 @@
 import InputSection from '@/components/Input-section.vue'
 import DataSection from '@/components/Data-section.vue'
 
-const APIKEY = 'LTSY55G9R1CJFQ11'
-
 export default {
   name: 'CryptoSection',
   components: {
@@ -48,7 +46,13 @@ export default {
   },
   data () {
     return {
+      VUE_APP_APIKEY: process.env.VUE_APP_APIKEY,
       apiData: '',
+      apiInfo: {
+        timeSeries: null,
+        recentTime: null,
+        metaData: null
+      },
       cryptoInfo: {
         openPrice: '',
         closePrice: '',
@@ -68,8 +72,33 @@ export default {
     }
   },
   computed: {
-    recentlyViewedItems() {
-      return [...this.recentlyViewed].reverse().slice(0,3)
+    // recentlyViewedItems() {
+    //   return [...this.recentlyViewed].reverse().slice(0,3)
+    // }
+    tickerComputed: function () {
+      return '$' + this.apiData[this.apiInfo.metaData]['2. Digital Currency Code']
+    },
+    openPriceComputed: function () {
+      return Number(this.apiData[this.apiInfo.timeSeries][this.apiInfo.recentTime]['1. open']).toFixed(2)
+    },
+    closePriceComputed: function () {
+      return Number(this.apiData[this.apiInfo.timeSeries][this.apiInfo.recentTime]['4. close'])
+    },
+    highestPriceComputed: function () {
+      const max = Object.values(this.apiData[this.apiInfo.timeSeries]).map((values) => values['2. high'])
+      const highestPrice = Math.max(...max)
+      return highestPrice.toFixed(2)
+    },
+    lowestPriceComputed: function () {
+      const min = Object.values(this.apiData[this.apiInfo.timeSeries]).map((values) => values['3. low'])
+      const minPrice = Math.min(...min)
+      return minPrice
+    },
+    totalVolumeComputed: function () {
+      const volumes = Object.values(this.apiData[this.apiInfo.timeSeries]).map((values) => values['5. volume'])
+
+      const totalVolume = volumes.reduce((acc, volume) => { return acc + volume},0)
+      return totalVolume.toLocaleString()
     }
   },
   methods: {
@@ -80,49 +109,42 @@ export default {
 
       const ticker = userInputSymbol.toUpperCase()
       // FETCH DATA FROM STOCK API
-      const response = await fetch(`https://www.alphavantage.co/query?function=CRYPTO_INTRADAY&symbol=${ticker}&market=USD&interval=5min&apikey=${APIKEY}`)
+      const response = await fetch(`https://www.alphavantage.co/query?function=CRYPTO_INTRADAY&symbol=${ticker}&market=USD&interval=5min&apikey=${this.VUE_APP_APIKEY}`)
       const data = await response.json()
         .then((res) => this.showData(res))
         .then(() => this.isLoading = false)
         .catch((err) => this.errorMessage(err))
-        
+      
       return data
     },
     showData(data) { 
       this.apiData = data
-
       this.loadInfoContainer = true
-
       this.isLoading = false
-
       document.body.classList.add('crypto')
+
       // SHOW THE DATA CONTAINER
-      const metaData = Object.keys(data)[0]
-      const timeSeries = Object.keys(data)[1]
-      const recentTime = Object.keys(data[timeSeries])[0]
+      this.apiInfo.metaData = Object.keys(data)[0]
+      this.apiInfo.timeSeries = Object.keys(data)[1]
+      this.apiInfo.recentTime = Object.keys(data[this.apiInfo.timeSeries])[0]
 
-      this.cryptoInfo.ticker = '$' + data[metaData]['2. Digital Currency Code']
+      // GET TICKER
+      this.cryptoInfo.ticker = this.tickerComputed
 
-      this.cryptoInfo.openPrice = Number(data[timeSeries][recentTime]['1. open']).toFixed(2)
+      // GET THE OPENING PRICE
+      this.cryptoInfo.openPrice = this.openPriceComputed
 
-      this.cryptoInfo.closePrice = Number(data[timeSeries][recentTime]['4. close'])
+      // GET THE CLOSING PRICE FOR THE STOCK
+      this.cryptoInfo.closePrice = this.closePriceComputed
 
       // GET THE HIGHEST PRICE
-      const max = Object.values(data[timeSeries]).map((values) => values['2. high'])
-      const highestPrice = Math.max(...max)
-      this.cryptoInfo.highPrice = highestPrice
+      this.cryptoInfo.highPrice = this.highestPriceComputed
 
       // GET THE LOWEST PRICE
-      const min = Object.values(data[timeSeries]).map((values) => values['3. low'])
-      const minPrice = Math.min(...min)
-      this.cryptoInfo.lowPrice = minPrice
+      this.cryptoInfo.lowPrice = this.lowestPriceComputed
 
       // CALCULATE VOLUME FOR THE DAY 
-      const volumes = Object.values(data[timeSeries]).map((values) => values['5. volume'])
-
-      const totalVolume = volumes.reduce((acc, volume) => { return acc + volume},0)
-
-      this.cryptoInfo.volume = totalVolume
+      this.cryptoInfo.volume = this.totalVolumeComputed
 
       // PUSH RECENTS TO UI AND ADDING RECENLTY VIEWED AREA
       const recentData = {
@@ -131,15 +153,9 @@ export default {
         open: this.cryptoInfo.openPrice,
         close: this.cryptoInfo.closePrice
       }
-      
-      if (this.recentlyViewed.length < 3) {
-        this.recentlyViewed.push(recentData)
-      }
+      this.recentlyViewed.push(recentData)
 
-      if (this.recentlyViewed.length === 3) {
-        this.recentlyViewed.pop()
-        this.recentlyViewed.push(recentData)
-      }
+      this.recentlyViewed = this.recentlyViewed.reverse().slice(0, 3)
 
     },
     errorMessage(data) {
@@ -149,7 +165,7 @@ export default {
       this.stockLoadingError = true
     },
     deleteRecent(i) {
-      this.recentlyViewed.slice(i, 1)
+      this.recentlyViewed.splice(i, 1)
     },
   },
 }
