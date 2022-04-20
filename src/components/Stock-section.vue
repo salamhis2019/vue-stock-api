@@ -3,6 +3,7 @@
     <!-- INPUT CONTAINER -->
     <InputSection 
       @fetchApi="fetchApi"
+      :dataSectionStyle="dataSectionStyle"
     />
     <div>
       <DataSection 
@@ -71,25 +72,31 @@ export default {
     recentlyViewedItems: function () {
       return [...this.recentlyViewed].reverse().slice(0, 3)
     },
+
     tickerComputed: function () {
       return '$' + this.apiData[this.apiInfo.metaData]['2. Symbol']
     },
+
     openPriceComputed: function () {  
       return Number(this.apiData[this.apiInfo.timeSeries][this.apiInfo.recentTime]['1. open']).toFixed(2)
     },
+
     closePriceComputed: function () {
       return Number(this.apiData[this.apiInfo.timeSeries][this.apiInfo.recentTime]['4. close']).toFixed(2)
     },
+
     lowestPriceComputed: function () {
       let minimum = Object.values(this.apiData[this.apiInfo.timeSeries]).map((data) => Number(data['3. low']))
       let lowestPrice = Math.min(...minimum) 
       return lowestPrice.toFixed(2)
     },
+
     highestPriceComputed: function () {
       let maximum = Object.values(this.apiData[this.apiInfo.timeSeries]).map((data) => Number(data['2. high']))
       let highestPrice = Math.max(...maximum)
       return highestPrice.toFixed(2)
     },
+
     totalVolumeComputed: function () {
       let volume = Object.values(this.apiData[this.apiInfo.timeSeries]).map((data) => Number(data['5. volume']))
       const totalVolume = volume.reduce((acc, volume) => {
@@ -100,11 +107,12 @@ export default {
   },
   methods: {
     async fetchApi (userInputSymbol) {
+
       const APIKEY = this.VUE_APP_APIKEY
       this.isLoading = true
       this.stockLoadingError = false
-
       const ticker = userInputSymbol.toUpperCase()
+
       // FETCH DATA FROM STOCK API
       const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${ticker}&interval=5min&apikey=${APIKEY}`)
       const data = await response.json()
@@ -155,7 +163,6 @@ export default {
       this.recentlyViewed.push(recentData)
 
       // REVERSE AND SPLICE STRING FOR RIGHT TO LEFT SEQUENTIAL VIEW ON UI
-      // this.recentlyViewed.reverse().slice(0 ,3)
 
       this.userInputSymbol = ""
     },
@@ -168,7 +175,7 @@ export default {
     }, 
     // DELETE RECENTLY VIEWED ITEM FROM DOM
     deleteRecent(i) {
-      this.recentlyViewed.splice(i, 1)
+      this.recentlyViewed.reverse().splice(i, 1)
     }
   }
 }

@@ -7,11 +7,16 @@
     </div>
     <!-- RIGHT SIDE OF THE DATA CONTAINER WHERE ALL THE INFO IS FOUND ON THE SEARCH -->
     <div class="cell2">
-      <span class="description">Open: </span><span class="data">{{ fetchedInfo.openPrice }}</span>
-      <span class="description">Close: </span><span class="data">{{ fetchedInfo.closePrice }}</span>
-      <span class="description">High: </span><span class="data">{{ fetchedInfo.highPrice }}</span>
-      <span class="description">Low: </span><span class="data">{{ fetchedInfo.lowPrice }}</span>
-      <span class="description">Volume: </span><span class="data">{{ fetchedInfo.volume }}</span>
+      <span class="description">Open:</span>
+      <span class="data">{{ fetchedInfo.openPrice }}</span>
+      <span class="description">Close:</span>
+      <span class="data">{{ fetchedInfo.closePrice }}</span>
+      <span class="description">High:</span>
+      <span class="data">{{ fetchedInfo.highPrice }}</span>
+      <span class="description">Low: </span>
+      <span class="data">{{ fetchedInfo.lowPrice }}</span>
+      <span class="description">Volume:</span>
+      <span class="data">{{ fetchedInfo.volume }}</span>
     </div>
   </div>
   <!-- LOADING INDICATOR -->
@@ -54,34 +59,30 @@ export default {
 
 <style scoped>
   /* DATA CONTAINER STYLES */
-  .stock-container {
+  .stock-container, .crypto-container {
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 0.7fr;
+    border-bottom-right-radius: 25px;
     row-gap: 1em;
     height: 200px;
     max-width: 900px;
 
     margin: 2em auto;
     padding: 1em;
-
-    background: linear-gradient(to left, #10ce1f, #003805);
     color: #E7F0FF;
   }
 
   .crypto-container {
-    box-sizing: border-box;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    row-gap: 1em;
-    height: 200px;
-    max-width: 900px;
+    background: linear-gradient(to left, #0002308b, #00380500), url('../images/crypto-gradient.png');
+    background-size: cover;
+    background-position: bottom;
+  }
 
-    margin: 2em auto;
-    padding: 1em;
-
-    background: linear-gradient(to left, #1098f7, #03254E);
-    color: #E7F0FF;
+  .stock-container {
+    background: linear-gradient(to left, #0030048b, #00380500), url('../images/stock-gradient.png');
+    background-size: cover;
+    background-position: bottom;
   }
 
   /* STYLES FOR THE OUTPUT */
@@ -89,15 +90,15 @@ export default {
   .description {
     text-align: left;
     font-family: 'Nunito', sans-serif;
-
-    font-size: 1.3em;
+    width: 100%;
+    font-size: 1.4em;
     font-style: italic;
     margin: auto;
   }
 
   .ticker {
-    font-weight: 300;
-    font-size: 3em;
+    font-weight: 500;
+    font-size: 4em;
     font-family: 'Oxygen', sans-serif;    
     margin: 0;
   }
@@ -109,6 +110,7 @@ export default {
   }
 
   .cell {
+    margin-top: 1em;
     width: 40%;
     text-align: left;
 
@@ -117,12 +119,11 @@ export default {
 
   .cell2 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: (3 1fr);
+    grid-template-columns: 0.8fr 1fr;
+    width: 375px;
     max-height: 200px;
 
     vertical-align: middle;
-    text-align: left;
   }
   
   /* LOADING CONTAINER */

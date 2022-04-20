@@ -70,7 +70,8 @@ export default {
     justify-content: center;
     min-height: 100vh;
 
-    background: linear-gradient(to bottom, #10f72328, #034e20f1), url('./images/Stock-background.jpg');
+    /* background: linear-gradient(to bottom, #10f72328, #034e20f1), url('./images/Stock-background.jpg'); */
+    background: linear-gradient(to bottom, #080808, black);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
