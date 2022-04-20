@@ -63,26 +63,28 @@ export default {
     column-gap: 1em;
   }
 
-  .recent-stock {
+  .recent-stock, .recent-crypto {
     box-sizing: border-box;
     height: 225px;
     padding: 1em;
+    border-radius: 15px;
 
     background: rgb(3,37,78);
-    background: radial-gradient(circle, #10ce1f 0%, #004906 85%);
-    box-shadow: 4px 4px #E7F0FF;
+    background: radial-gradient(circle, #111111 0%, #1B1B1C 85%);
     color: #E7F0FF;
+    transition: 0.2s ease;
   }
 
   .recent-crypto {
-    box-sizing: border-box;
-    height: 225px;
-    padding: 1em;
+    background: radial-gradient(circle, #111111 0%, #1B1B1C 85%);
+  }
 
-    background: rgb(3,37,78);
-    background: radial-gradient(circle, #1097f7 0%, #03254E 85%);
-    box-shadow: 4px 4px #E7F0FF;
-    color: #E7F0FF;
+  .recent-stock {
+    background: radial-gradient(circle, #191919 0%, #1B1B1C 85%);
+  }
+
+  .recent-stock:hover {
+    box-shadow: 2px 2px 3px #e7f0ffa1;
   }
 
   .recent-header {
