@@ -3,7 +3,20 @@
     <!-- LEFT SIDE OF INFO CONTAINER WHERE THE TICKER AND GENERAL INFO IS -->
     <div class="cell">
       <span class="description">Ticker: </span>
-      <h1 class="ticker">{{ displayTicker }}</h1>
+      <div class="ticker-area">
+        <h1 class="ticker">{{ displayTicker }}</h1>
+        <div class="stock-performance-container">
+          <div class="daily-performance">
+            <i v-if="fetchedInfo.stockPerformance === 'gained'" class="material-icons arrow-up">arrow_drop_up</i>
+            <i v-else class="material-icons arrow-down">arrow_drop_down</i>          
+            <div class="performance">
+              <p class="percent-change">{{ fetchedInfo.percentChange }}</p>
+              <p class="price-change">{{ fetchedInfo.priceChange }}</p>
+            </div>            
+          </div>
+            
+        </div>
+      </div>
     </div>
     <!-- RIGHT SIDE OF THE DATA CONTAINER WHERE ALL THE INFO IS FOUND ON THE SEARCH -->
     <div class="cell2">
@@ -95,6 +108,11 @@ export default {
     font-style: italic;
     margin: auto;
   }
+  
+  .ticker-area {
+    display: flex;
+    align-items: center;
+  }
 
   .ticker {
     font-weight: 500;
@@ -124,6 +142,31 @@ export default {
     max-height: 200px;
 
     vertical-align: middle;
+  }
+
+  /* SHOWING IF THE STOCK IS UP OR DOWN */
+  .arrow-down, .arrow-up {
+    padding-left: 0.2em;
+    font-size: 45px;
+  }
+
+  .arrow-up {
+    color: greenyellow
+  }
+
+  .arrow-down {
+    color: red;
+  }
+
+  .daily-performance {
+    display: flex;
+    align-items: center
+  }
+
+  .percent-change, .price-change {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.2em;
+    font-weight: 600;
   }
   
   /* LOADING CONTAINER */

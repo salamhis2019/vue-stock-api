@@ -73,6 +73,8 @@ export default {
     background: radial-gradient(circle, #111111 0%, #1B1B1C 85%);
     color: #E7F0FF;
     transition: 0.2s ease;
+
+    cursor: pointer;
   }
 
   .recent-crypto {

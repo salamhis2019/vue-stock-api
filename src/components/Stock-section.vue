@@ -40,14 +40,14 @@ export default {
     return {
       VUE_APP_APIKEY: process.env.VUE_APP_APIKEY,
       // DATA FROM API
-      apiData: '',
+      apiData: null,
+      apiDataDaily: null,
       apiInfo: {
         timeSeries: null,
         recentTime: null,
         metaData: null
       },
       // DATA FOR STOCK INFO
-      symbol: '',
       stockInfo: {
         openPrice: '',
         closePrice: '',
@@ -55,6 +55,10 @@ export default {
         lowPrice: '',
         volume: '',
         ticker: '',
+        rawTicker: null,
+        stockPerformance: null,
+        percentChange: null,
+        priceChange: null
       },
       // DATA FOR UI ELEMENTS LOADING
       loadInfoContainer: false,
@@ -77,12 +81,12 @@ export default {
       return '$' + this.apiData[this.apiInfo.metaData]['2. Symbol']
     },
 
-    openPriceComputed: function () {  
-      return Number(this.apiData[this.apiInfo.timeSeries][this.apiInfo.recentTime]['1. open']).toFixed(2)
+    openPriceComputed: function() {
+      return Object.values(this.apiDataDaily[Object.keys(this.apiDataDaily)[1]])[0]['1. open']
     },
-
-    closePriceComputed: function () {
-      return Number(this.apiData[this.apiInfo.timeSeries][this.apiInfo.recentTime]['4. close']).toFixed(2)
+    
+    closePriceComputed: function() {
+      return Object.values(this.apiDataDaily[Object.keys(this.apiDataDaily)[1]])[0]['4. close']
     },
 
     lowestPriceComputed: function () {
@@ -103,6 +107,16 @@ export default {
         return acc + volume
       }, 0)
       return totalVolume.toLocaleString()
+    },
+
+    percentChangeComputed: function () {
+      const difference = Number(this.closePriceComputed - this.openPriceComputed)
+      const percentChange = difference / this.openPriceComputed * 100
+      return percentChange.toFixed(2) + '%'
+    },
+
+    priceChangeComputed: function () {
+      return Number(this.closePriceComputed - this.openPriceComputed).toFixed(2)
     }
   },
   methods: {
@@ -135,12 +149,6 @@ export default {
       // TICKER ON UI
       this.stockInfo.ticker = this.tickerComputed
 
-      // OPEN PRICE
-      this.stockInfo.openPrice = this.openPriceComputed
-
-      // CLOSING PRICE 
-      this.stockInfo.closePrice = this.closePriceComputed
-
       // LOWEST PRICE
       this.stockInfo.lowPrice = this.lowestPriceComputed
 
@@ -150,7 +158,37 @@ export default {
       // GET TOTAL VOLUME
       this.stockInfo.volume = this.totalVolumeComputed
 
-      // ADDING RECENTLY VIEWED AREA AND PUSHING EMPTY ITEMS TO INSTANTIATED STACK
+      // RAW TICKER
+      this.stockInfo.rawTicker = data[this.apiInfo.metaData]['2. Symbol']
+
+      this.userInputSymbol = ""
+      
+      this.fetchOpenAndClose()
+    },
+    async fetchOpenAndClose() {
+      const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.stockInfo.rawTicker}&interval=5min&apikey=${this.VUE_APP_APIKEY}`)
+      const data = await response.json()
+        .then((data) => this.getOpenAndClose(data))
+        .catch((err) => this.errorMessage(err))
+
+      return data
+    },
+    getOpenAndClose (data) {
+      this.apiDataDaily = data
+
+      // OPEN PRICE
+      this.stockInfo.openPrice = this.openPriceComputed
+
+      // CLOSING PRICE 
+      this.stockInfo.closePrice = this.closePriceComputed
+
+      // PERCENT CHANGE
+      this.stockInfo.percentChange = this.percentChangeComputed
+
+      // DIFFERENCE
+      this.stockInfo.priceChange = this.priceChangeComputed
+
+      // PUSH DATA TO RECENTLY VIEWED ARRAY
       const recentData = {
         id: new Date().valueOf(),
         ticker: this.stockInfo.ticker,
@@ -162,9 +200,7 @@ export default {
       }
       this.recentlyViewed.push(recentData)
 
-      // REVERSE AND SPLICE STRING FOR RIGHT TO LEFT SEQUENTIAL VIEW ON UI
-
-      this.userInputSymbol = ""
+      return (this.stockInfo.openPrice < this.stockInfo.closePrice) ? this.stockInfo.stockPerformance = 'gained' : this.stockInfo.stockPerformance = 'lost'
     },
     // DISPLAY ERROR MESSAGE IF THE USER INPUT IS NOT VALID
     errorMessage(data) {

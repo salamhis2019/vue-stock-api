@@ -15,8 +15,11 @@ export default {
 <style scoped>
   .error-container {
     text-transform: uppercase;
-    color: #E7F0FF;
     text-align: center;
+    margin-top: 1em;
+    border-bottom-right-radius: 25px;
+
+    color: #E7F0FF;
     border: 2px solid red;
     background-color: red;
   }

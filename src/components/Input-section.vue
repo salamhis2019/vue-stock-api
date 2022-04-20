@@ -100,12 +100,12 @@ export default {
     border-radius: 0px;
     font-size: 1em;
     outline: none;
-    color: white;
+    color: #E7F0FF;
   }
 
   .stock-input[type="text"], .crypto-input[type="text"] {
     font-size: 1.5em;
-    color: white;
+    color: #E7F0FF;
     text-transform: uppercase;
   }
 
@@ -114,24 +114,22 @@ export default {
   .stock-arrow, .crypto-arrow {
     font-size: 2.5em;
     border-radius: 50%;
-    color: black;
+    color: #e7f0ffa0;
 
     cursor: pointer;
     transition: 0.3s ease;
   }
 
-  .stock-arrow {
+  .stock-arrow:hover {
+    transform: translateX(4px);
+    color: #E7F0FF;
     background: radial-gradient(circle, #52E24B, #002F09 95%);
   }
 
-  .crypto-arrow {
-    background: radial-gradient(circle, #1097f7, #03254E 95%);
-  }
-
-  .stock-arrow:hover,
   .crypto-arrow:hover {
     transform: translateX(4px);
-    color: white;
+    color: #E7F0FF;
+    background: radial-gradient(circle, #1097f7, #03254E 95%);
   }
 
   .stock-arrow:active,
