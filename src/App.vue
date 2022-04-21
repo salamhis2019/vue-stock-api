@@ -1,8 +1,8 @@
 <template>
   <div class="hero-container">
     <div class="tabs">
-      <button class="stocks-button" @click="chooseComponent('StockSection')">Stocks</button>
-      <button class="crypto-button" @click="chooseComponent('CryptoSection')">Crypto</button>
+      <button :class="stockButtonStyle" class="button stock-default" @click="chooseComponent('StockSection')">Stocks</button>
+      <button :class="cryptoButtonStyle" class="button crypto-default" @click="chooseComponent('CryptoSection')">Crypto</button>
     </div>
     <keep-alive>
       <component :is="component"></component>
@@ -35,6 +35,8 @@ export default {
   data () {
     return {
       component: 'StockSection',
+      stockButtonStyle: 'stocks-button',
+      cryptoButtonStyle: null,
     }
   },
   computed: {},
@@ -43,8 +45,12 @@ export default {
       this.component = cmp
       if (this.component !== 'StockSection') {
         document.body.classList.add('crypto-background')
+        this.stockButtonStyle = null
+        this.cryptoButtonStyle = 'crypto-button'
       } else {
         document.body.classList.remove('crypto-background')
+        this.stockButtonStyle = 'stocks-button'
+        this.cryptoButtonStyle = null
       }
     }
   }
@@ -85,36 +91,58 @@ export default {
     text-align: center;
   }
 
-  .stocks-button, .crypto-button {
-    height: 2em;
+  .button {
+    height: 2.5em;
     width: 175px;
+    margin: 0.5em;
 
-    background-color: #E7F0FF;
-    color: #03254E;
+    background-color: #004f6b47;
+    color: #ffffffab;
     font-size: 1.2em;
     font-family: 'Nunito', sans-serif;
 
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
     border: none;
     cursor: pointer;
     transition: 0.2s ease
   }
 
-  .stocks-button:hover, .crypto-button:hover {
-    background-color: #ececec;
+  .stocks-button {
+    margin-right: 0.5em;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(to right, #002F09, #52E24B) 1;   
   }
 
-  .stocks-button:focus {
-    background-color: green;
-    color: #E7F0FF;
+  .crypto-button:hover {
+    background-color: #004f6b8f;
+  }
+  
+  .stocks-button:hover {
+    background-color: #006b248f;
   }
 
   .crypto-button {
-    border-left: 1px solid #03254E;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(to right, #03254E, #1097f7) 1; 
+    border-bottom-right-radius: 10px;
+
+    transition: 0.2s ease;
   }
 
   .crypto-button:active {
     background-color: #03254E;
     color: #E7F0FF;
+  }
+
+  .crypto-default:hover {
+    border-bottom: 2px solid;
+    border-image: linear-gradient(to right, #03254E, #1097f7) 1; 
+  }
+
+  .stock-default:hover {
+    border-bottom: 2px solid;
+    border-image: linear-gradient(to right, #002F09, #52E24B) 1;  
   }
 
   .stocks-logo, .crypto-logo {

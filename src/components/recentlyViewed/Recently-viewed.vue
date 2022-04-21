@@ -1,5 +1,5 @@
 <template>
-  <p class="recent-text">Recently Viewed</p>
+  <p class="recent-text"> Recently Viewed </p>
   <div class="recently-viewed">
     <div 
       :class="[(dataSectionStyle === 'stock-container') ? currentRecentStyle = 'recent-stock' : 'recent-crypto']" 
@@ -43,12 +43,12 @@ export default {
   .recent-text:after {
     content: "";
     flex: 1 1;
-    border-bottom: 2px solid rgb(255, 255, 255);
+    border-bottom: 2px solid #ffffff8f;
     margin: auto;
   }
 
   .recent-text {
-    color: #E7F0FF;
+    color: #ffffff8f;
     text-align: center;
 
     font-size: 1.5em;

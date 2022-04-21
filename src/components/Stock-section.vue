@@ -82,11 +82,11 @@ export default {
     },
 
     openPriceComputed: function() {
-      return Object.values(this.apiDataDaily[Object.keys(this.apiDataDaily)[1]])[0]['1. open']
+      return Number(Object.values(this.apiDataDaily[Object.keys(this.apiDataDaily)[1]])[0]['1. open']).toFixed(2)
     },
     
     closePriceComputed: function() {
-      return Object.values(this.apiDataDaily[Object.keys(this.apiDataDaily)[1]])[0]['4. close']
+      return Number(Object.values(this.apiDataDaily[Object.keys(this.apiDataDaily)[1]])[0]['4. close']).toFixed(2)
     },
 
     lowestPriceComputed: function () {
@@ -187,6 +187,9 @@ export default {
 
       // DIFFERENCE
       this.stockInfo.priceChange = this.priceChangeComputed
+
+      console.log(this.closePriceComputed)
+      console.log(this.openPriceComputed)
 
       // PUSH DATA TO RECENTLY VIEWED ARRAY
       const recentData = {

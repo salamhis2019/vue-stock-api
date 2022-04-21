@@ -70,7 +70,7 @@ export default {
 
     border-bottom-width: 3px;
     border-bottom-style: solid;
-    background: rgba(0, 79, 107, 0.278);
+    background: #004f6b47;
     border-radius: 5px; 
   }
 
