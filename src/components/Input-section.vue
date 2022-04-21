@@ -95,12 +95,8 @@ export default {
     text-transform: capitalize;
   }
 
-  .input-element:focus,
-  .crypto-input:focus {
-    border-radius: 0px;
-    font-size: 1em;
-    outline: none;
-    color: #E7F0FF;
+  .input-and-button:focus {
+    border: 2px solid white;
   }
 
   .stock-input[type="text"], .crypto-input[type="text"] {

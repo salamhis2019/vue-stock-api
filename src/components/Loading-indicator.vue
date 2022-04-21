@@ -1,24 +1,15 @@
 <template>
-  <img v-if="isLoading" :src="loadingImage" class="loading-image" alt="">
+  <img v-if="isLoading" :src="changeLoadingImage" class="loading-image" alt="">
 </template>
 
 <script>
 export default {
   name: 'LoadingIndicator',
   props: ['isLoading', 'dataSectionStyle'],
-  data () {
-    return {
-      loadingImage: require('../images/loading.gif')
+  computed: {
+    changeLoadingImage: function () {
+      return (this.dataSectionStyle === 'stock-container') ? '/img/stock.d8ce57d4.gif' : '/img/loading.c63c963e.gif'
     }
-  },
-  watch: {
-    changeImage() {
-      if (this.dataSectionStyle === 'crypto-container') {
-        this.loadingImage = 'require(\'.../images/loading.gif\')'
-      } else {
-        this.loadingImage = 'require(\'.../images/stocks.gif\')'
-      }
-     }
   }
 }
 </script>

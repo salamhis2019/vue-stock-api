@@ -7,14 +7,13 @@
         <h1 class="ticker">{{ displayTicker }}</h1>
         <div class="stock-performance-container">
           <div class="daily-performance">
-            <i v-if="fetchedInfo.stockPerformance === 'gained'" class="material-icons arrow-up">arrow_drop_up</i>
-            <i v-else class="material-icons arrow-down">arrow_drop_down</i>          
+            <i v-if="fetchedInfo.stockPerformance === 'gained'" class="material-icons arrow-up">trending_up</i>
+            <i v-else class="material-icons arrow-down">trending_down</i>          
             <div class="performance">
               <p class="percent-change">{{ fetchedInfo.percentChange }}</p>
               <p class="price-change">{{ fetchedInfo.priceChange }}</p>
             </div>            
           </div>
-            
         </div>
       </div>
     </div>
@@ -146,7 +145,7 @@ export default {
 
   /* SHOWING IF THE STOCK IS UP OR DOWN */
   .arrow-down, .arrow-up {
-    padding-left: 0.2em;
+    padding: 0 0.3em;
     font-size: 45px;
   }
 
