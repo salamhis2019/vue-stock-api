@@ -33,7 +33,7 @@
   </div>
   <!-- LOADING INDICATOR -->
   <div class="loading-container">
-    <div v-if="isLoading">
+    <div>
       <LoadingIndicator 
         :isLoading="isLoading"
         :dataSectionStyle="dataSectionStyle"

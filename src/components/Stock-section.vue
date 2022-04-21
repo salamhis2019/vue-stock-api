@@ -26,8 +26,8 @@
 <script>
 
 import DataSection from '@/components/Data-section.vue'
+import RecentlyViewedArea from '@/components/additionalAdds/Recently-viewed.vue'
 import InputSection from '@/components/Input-section.vue'
-import RecentlyViewedArea from '@/components/recentlyViewed/Recently-viewed.vue'
 
 export default {
   name: 'stock-section',
@@ -187,9 +187,6 @@ export default {
 
       // DIFFERENCE
       this.stockInfo.priceChange = this.priceChangeComputed
-
-      console.log(this.closePriceComputed)
-      console.log(this.openPriceComputed)
 
       // PUSH DATA TO RECENTLY VIEWED ARRAY
       const recentData = {

@@ -1,14 +1,14 @@
 <template>
-  <img v-if="isLoading" :src="changeLoadingImage" class="loading-image" alt="">
+  <img v-if="isLoading" :src="loadingImage" class="loading-image" alt="">
 </template>
 
 <script>
 export default {
   name: 'LoadingIndicator',
   props: ['isLoading', 'dataSectionStyle'],
-  computed: {
-    changeLoadingImage: function () {
-      return (this.dataSectionStyle === 'stock-container') ? '/img/stock.d8ce57d4.gif' : '/img/loading.c63c963e.gif'
+  data () {
+    return {
+      loadingImage: require('../images/loadingImage.gif')
     }
   }
 }
