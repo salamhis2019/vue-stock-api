@@ -1,20 +1,22 @@
 <template>
   <p class="recent-text"> Recently Viewed </p>
   <div class="recently-viewed">
-    <div 
-      :class="[(dataSectionStyle === 'stock-container') ? currentRecentStyle = 'recent-stock' : 'recent-crypto']" 
-      v-for="(info, i) in recentlyViewedArr" 
-      :key="info.id"
-    >
-      <div class="recent-header">
-        <p class="recently-viewed-ticker">{{ info.ticker }}</p>
-        <i class="material-icons" @click="deleteRecent(i)">close</i>
+    <transition-group name="list">
+      <div 
+        :class="[(dataSectionStyle === 'stock-container') ? currentRecentStyle = 'recent-stock' : 'recent-crypto']" 
+        v-for="(info, i) in recentlyViewedArr" 
+        :key="info.id"
+      >
+        <div class="recent-header">
+          <p class="recently-viewed-ticker">{{ info.ticker }}</p>
+          <i class="material-icons" @click="deleteRecent(i)">close</i>
+        </div>
+        <div class="recent-info-container">
+          <p>Open: {{ info.open }}</p>
+          <p>Close: {{ info.close }}</p>
+        </div>
       </div>
-      <div class="recent-info-container">
-        <p>Open: {{ info.open }}</p>
-        <p>Close: {{ info.close }}</p>
-      </div>
-    </div>
+    </transition-group>
   </div>
 </template>
 
@@ -125,5 +127,32 @@ export default {
 
   .recent-info-container p {
     font-size: 1.2em;
+  }
+
+  /* list transitions */
+  .list-enter-form {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  .list-enter-to {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .list-enter.active {
+    transition: all 0.4s ease;
+  }
+
+  .list-leave-from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .list-leave-to {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  .list-leave-active {
+    transition: all 0.4s ease;
   }
 </style>
