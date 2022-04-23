@@ -206,6 +206,8 @@ export default {
     errorMessage(data) {
       console.error('This is an error try again "' + data + '"')
 
+      console.log(data.Note)
+
       this.ticker = ""
       this.stockLoadingError = true
     }, 
