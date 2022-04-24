@@ -51,7 +51,7 @@ export default {
         lowPrice: '',
         volume: '',
         ticker: '',
-        rawTicker: null,
+        rawTicker: '',
         stockPerformance: null,
         percentChange: null, 
         priceChange: null
@@ -72,7 +72,7 @@ export default {
     },
 
     tickerComputed: function () {
-      return '$' + this.apiData[this.apiInfo.metaData]['2. Digital Currency Code']
+      return this.apiData[this.apiInfo.metaData]['2. Digital Currency Code']
     },
 
     openPriceComputed: function () {
@@ -116,8 +116,8 @@ export default {
     async fetchApi (userInputSymbol) {
       this.isLoading = true
       this.stockLoadingError = false
-
       const ticker = userInputSymbol.toUpperCase()
+      this.cryptoInfo.rawTicker = ticker
       
       // FETCH DATA FROM STOCK API
       const response = await fetch(`https://www.alphavantage.co/query?function=CRYPTO_INTRADAY&symbol=${ticker}&market=USD&interval=5min&apikey=${this.VUE_APP_APIKEY}`)
@@ -129,6 +129,7 @@ export default {
       return data
     },
     showData(data) { 
+      console.log('datasuccess')
       this.apiData = data
       this.loadInfoContainer = true
       this.isLoading = false
@@ -142,12 +143,6 @@ export default {
       // GET TICKER
       this.cryptoInfo.ticker = this.tickerComputed
 
-      // GET THE OPENING PRICE
-      this.cryptoInfo.openPrice = this.openPriceComputed
-
-      // GET THE CLOSING PRICE FOR THE STOCK
-      this.cryptoInfo.closePrice = this.closePriceComputed
-
       // GET THE HIGHEST PRICE
       this.cryptoInfo.highPrice = this.highestPriceComputed
 
@@ -158,16 +153,14 @@ export default {
       this.cryptoInfo.volume = this.totalVolumeComputed
 
       // RAW TICKER
-      this.cryptoInfo.rawTicker = data[this.apiInfo.metaData]['2. Digital Currency Code']
+      this.cryptoInfo.rawTicker = this.tickerComputed
 
       console.log(data[this.apiInfo.metaData]['2. Digital Currency Code'])
-
-      this.userInputSymbol = ""
 
       this.fetchOpenAndClose()
     },
     async fetchOpenAndClose() {
-      const response = await fetch(`https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=${this.cryptoInfo.rawTicker}&market=USD&apikey=${this.VUE_APP_APIKEY}`)
+      const response = await fetch(`https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=${this.cryptoInfo.ticker}&market=USD&apikey=${this.VUE_APP_APIKEY}`)
       const data = await response.json()
         .then((data) => this.getOpenAndClose(data))
         .catch((err) => this.errorMessage(err))
@@ -175,6 +168,7 @@ export default {
       return data
     },
     getOpenAndClose (data) {
+      console.log('datasuccess')
       this.apiDataDaily = data
       console.log(this.apiDataDaily)
 
@@ -207,7 +201,7 @@ export default {
     errorMessage(data) {
       console.error('This is an error try again "' + data + '"')
 
-      this.apiDataDaily = data
+      console.log('data failed')
       this.ticker = ""
       this.stockLoadingError = true
     },
