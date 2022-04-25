@@ -57,7 +57,7 @@ export default {
   name: 'StockData',
   components: {
     LoadingIndicator,
-    ErrorMessage
+    ErrorMessage,
   },
   props: ['fetchedInfo', 'apiMethodInfo', 'stockLoadingError', 'isLoading', 'loadInfoContainer', 'dataSectionStyle'],
   computed: {
@@ -65,7 +65,7 @@ export default {
       const metaData = Object.keys(this.apiMethodInfo)[0]
       return '$' + Object.values(this.apiMethodInfo[metaData])[1]
     }
-  }
+  },
 }
 </script>
 
