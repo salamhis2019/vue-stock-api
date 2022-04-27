@@ -16,9 +16,14 @@
       />
     </div>
   </base-card>
-  <div class="canvas-area">
-    <canvas id="stockChart"></canvas>
-  </div>
+  <StockChart 
+      v-if="loadInfoContainer"  
+      :apiMethodInfo="apiData"
+      :closingPrices="closePriceArray"
+      :timeLabels="timesArray"
+      :loadInfoContainer="loadInfoContainer"
+      id="stock-chart"
+  />
   <RecentlyViewedArea
     :recentlyViewedArr="recentlyViewedItems"
     :dataSectionStyle="dataSectionStyle"
@@ -31,7 +36,8 @@
 import DataSection from '@/components/Data-section.vue'
 import RecentlyViewedArea from '@/components/additionalAdds/Recently-viewed.vue'
 import InputSection from '@/components/Input-section.vue'
-import Chart from 'chart.js/auto'
+import StockChart from '@/components/additionalAdds/Stock-chart.vue'
+// import Chart from 'chart.js/auto'
 
 export default {
   name: 'stock-section',
@@ -39,6 +45,7 @@ export default {
     DataSection,
     InputSection,
     RecentlyViewedArea,
+    StockChart,
   },
   data () {
     return {
@@ -75,14 +82,10 @@ export default {
       // CHART INFO
       timesArray: [],
       closePriceArray: [],
-      chartDisplay: {
-        chartColor: 'rgba(48, 221, 13, 1)',
-      }
+      chartData: [],
     }
   },
   computed: {
-    // THIS FUNCTION WAS NOT ABLE TO BE MANIPULATED WHEN ADDRESSED IN THE METHODS SECTION
-    // WILL REVISIT IMPLEMENTING THE RECENTLY VIEWED MANIPULATION IN THE FUTURE 
     recentlyViewedItems: function () {
       return [...this.recentlyViewed].reverse().slice(0, 3)
     },
@@ -151,6 +154,7 @@ export default {
       this.loadInfoContainer = true
       this.isLoading = false
 
+      // RESET CHART DATA CHART
       this.closingPrices = []
       this.timesArray = []
 
@@ -174,8 +178,6 @@ export default {
       // RAW TICKER
       this.stockInfo.rawTicker = data[this.apiInfo.metaData]['2. Symbol']
 
-      this.userInputSymbol = ""
-
       // TIMES ARRAY INFO
       const times = Object.keys(Object.values(this.apiData)[1]).map((time) => time.slice(11,19))
 
@@ -184,6 +186,7 @@ export default {
       this.timesArray = [...this.timesArray].reverse()
 
       // CLOSING PRICE ARRAY
+      this.closePriceArray.length = 0
       const closingPrices = Object.values(data['Time Series (5min)']).map((info) => info['4. close'])
 
       closingPrices.forEach(closePrice => this.closePriceArray.push(closePrice))
@@ -227,70 +230,12 @@ export default {
       }
       this.recentlyViewed.push(recentData)
 
-      // STOCK CHART INFORMATION
-      if (this.priceChange < 0) {
-        this.chartDisplay.chartColor = 'rgba(255, 0, 0, 1)'
-      }
-
-      const ctx = document.getElementById('stockChart').getContext('2d')
-      const gradient = ctx.createLinearGradient(0, 0, 0, 300)
-      gradient.addColorStop(0, this.chartDisplay.chartColor)
-      gradient.addColorStop(1, 'rgba(0, 255, 30,0.1)')
-      console.log(this.apiData)
-      const myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: this.timesArray,
-          datasets: [{
-            label: 'Closing Price',
-            data: this.closePriceArray,
-            backgroundColor: gradient,
-            pointRadius: 0,
-            borderColor: [
-              'rgba(255, 255, 255, 0.702)'
-            ],
-            fill: true,
-            borderWidth: 2
-          }]
-        },
-        options: {
-          scales: {
-            x: {
-              grid: {
-                display: false
-              },
-              ticks: {
-                color: 'rgba(255, 255, 255, 0.702)',
-                fontSize: 24,
-                stepSize: 1,
-                beginAtZero: true
-              }
-            },
-            y: {
-              grid: {
-                display: false
-              },
-              ticks: {
-                color: 'rgba(255, 255, 255, 0.702)',
-                fontSize: 24,
-              }
-            }
-          }
-        }
-      });
-      console.log('component mounted')
-
-      myChart;
-
+      // DETERMINE IF THE ARROW FOR THE STOCK PROJECT IS UP OR DOWN
       return (this.stockInfo.openPrice < this.stockInfo.closePrice) ? this.stockInfo.stockPerformance = 'gained' : this.stockInfo.stockPerformance = 'lost'
     },
     // DISPLAY ERROR MESSAGE IF THE USER INPUT IS NOT VALID
-    errorMessage(data) {
-      console.log(data)
-
-      console.log(data.Note)
-
-      this.ticker = ""
+    errorMessage(error) {
+      console.err(error)
       this.stockLoadingError = true
     }, 
     // DELETE RECENTLY VIEWED ITEM FROM DOM
@@ -305,12 +250,5 @@ export default {
   /* ERROR CONTAINER */
   .error-container {
     text-align: center;
-  }
-
-  .canvas-area {
-    display: flex;
-    justify-content: center;
-    margin: 1em auto;
-    width: 850px;
   }
 </style>

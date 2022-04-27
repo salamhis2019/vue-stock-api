@@ -12,7 +12,8 @@
     "core-js": "^3.8.3",
     "dotenv": "^16.0.0",
     "vue": "^3.2.13",
-    "vue-chartjs": "^4.0.6"
+    "vue-chartjs": "^4.0.7",
+    "vue-chartkick": "^1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

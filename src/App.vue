@@ -75,6 +75,7 @@ export default {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+    margin: 2em 0;
 
     background: linear-gradient(to bottom, #080808, rgb(0, 20, 2));
     background-size: cover;

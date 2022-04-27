@@ -18,7 +18,7 @@ export default {
   /* ERROR CONTAINER */
   .default-stock-text {
     padding-bottom: 1em;
-    color: #003805
+    color: #003805;
   }   
 
   .error-container {
