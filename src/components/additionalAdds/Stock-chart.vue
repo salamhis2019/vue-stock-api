@@ -16,6 +16,7 @@
 
 <script>
 import { Line as LineChartGenerator } from 'vue-chartjs'
+import clone from 'just-clone'
 
 import {
   Chart as ChartJS,
@@ -85,24 +86,6 @@ export default {
   },
   data() {
     return {
-      chartData: {
-        labels: this.timeLabels,
-        datasets: [
-          {
-            label: 'Closing Price',
-            backgroundColor: [
-              'green'
-            ],
-            data: this.closingPrices,
-            borderColor: [
-              'rgba(255, 255, 255, 0.9)'
-            ],
-            fill: true,
-            pointRadius: 0,
-            borderWidth: 2.5
-          }
-        ]
-      },
       chartOptions: {
         maintainAspectRatio: false,
         scales: {
@@ -133,6 +116,25 @@ export default {
           }
         },
       },
+    }
+  },
+
+  computed: {
+    chartData() {
+      return clone({
+        labels: this.timeLabels,
+        datasets: [
+          {
+            label: 'Closing Price',
+            backgroundColor: ['green'],
+            data: this.closingPrices,
+            borderColor: ['rgba(255, 255, 255, 0.9)'],
+            fill: true,
+            pointRadius: 0,
+            borderWidth: 2.5
+          }
+        ]
+      })
     }
   }
 }
