@@ -12,6 +12,7 @@
     "chart.js": "^3.7.1",
     "core-js": "^3.8.3",
     "dotenv": "^16.0.0",
+    "just-clone": "^5.0.1",
     "pinia": "^2.0.13",
     "vue": "^3.2.13",
     "vue-chartjs": "^4.0.7",
