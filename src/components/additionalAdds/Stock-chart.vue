@@ -16,6 +16,7 @@
 
 <script>
 import { Line as LineChartGenerator } from 'vue-chartjs'
+import clone from 'just-clone'
 
 import {
   Chart as ChartJS,
