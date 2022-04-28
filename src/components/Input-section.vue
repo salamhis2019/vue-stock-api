@@ -17,11 +17,9 @@
   </div>
 </template>
 
-<script>
-// import { useApiStore } from '@/store/useApi.js'
 
-// eslint-disable-next-line no-unused-vars
-// const apiData = useApiStore()
+<script>
+
 
 export default {
   name: "InputSection",
