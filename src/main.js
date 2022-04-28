@@ -1,12 +1,11 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import VueChartkick from 'vue-chartkick'
-import 'chartkick/chart.js'
 import BaseCard from './components/UI/BaseCard.vue'
+import { createPinia } from 'pinia'
 
 const app = createApp(App)
-app.use(VueChartkick)
+const pinia = createPinia()
 
 app.component('base-card', BaseCard)
-
+app.use(pinia)
 app.mount('#app')

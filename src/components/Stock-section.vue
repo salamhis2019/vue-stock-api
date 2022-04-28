@@ -37,6 +37,7 @@ import DataSection from '@/components/Data-section.vue'
 import RecentlyViewedArea from '@/components/additionalAdds/Recently-viewed.vue'
 import InputSection from '@/components/Input-section.vue'
 import StockChart from '@/components/additionalAdds/Stock-chart.vue'
+// import axios from 'axios'
 // import Chart from 'chart.js/auto'
 
 export default {
@@ -58,6 +59,7 @@ export default {
         recentTime: null,
         metaData: null
       },
+      testTicker: null,
       // DATA FOR STOCK INFO
       stockInfo: {
         openPrice: '',
@@ -83,6 +85,7 @@ export default {
       timesArray: [],
       closePriceArray: [],
       chartData: [],
+      gradient: null
     }
   },
   computed: {
@@ -134,10 +137,11 @@ export default {
   },
   methods: {
     async fetchApi (userInputSymbol) {
-
+      this.testTicker = userInputSymbol
       const APIKEY = this.VUE_APP_APIKEY
       this.isLoading = true
       this.stockLoadingError = false
+
       const ticker = userInputSymbol.toUpperCase()
 
       // FETCH DATA FROM STOCK API
@@ -234,15 +238,15 @@ export default {
       return (this.stockInfo.openPrice < this.stockInfo.closePrice) ? this.stockInfo.stockPerformance = 'gained' : this.stockInfo.stockPerformance = 'lost'
     },
     // DISPLAY ERROR MESSAGE IF THE USER INPUT IS NOT VALID
-    errorMessage(error) {
-      console.err(error)
+    errorMessage(err) {
+      console.err(err)
       this.stockLoadingError = true
     }, 
     // DELETE RECENTLY VIEWED ITEM FROM DOM
     deleteRecent(i) {
       this.recentlyViewed.reverse().splice(i, 1)
     },
-  },
+  }
 }
 </script>
 

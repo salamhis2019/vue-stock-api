@@ -91,8 +91,7 @@ export default {
           {
             label: 'Closing Price',
             backgroundColor: [
-              'green',
-              'rgba(255, 255, 255, 0.1)'
+              'green'
             ],
             data: this.closingPrices,
             borderColor: [
@@ -133,7 +132,7 @@ export default {
             }
           }
         },
-      }
+      },
     }
   }
 }
