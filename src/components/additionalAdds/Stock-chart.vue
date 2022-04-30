@@ -1,3 +1,19 @@
+<template>
+  <div class="chart-area">
+    <LineChartGenerator
+      :chart-options="chartOptions"
+      :chart-data="chartData"
+      :chart-id="chartId"
+      :dataset-id-key="datasetIdKey"
+      :plugins="plugins"
+      :css-classes="cssClasses"
+      :styles="styles"
+      :width="width"
+      :height="height"
+    />
+  </div>
+</template>
+
 <script>
 import { Line as LineChartGenerator } from 'vue-chartjs'
 import clone from 'just-clone'
@@ -66,6 +82,9 @@ export default {
     },
     closingPrices: {
       type: Array
+    },
+    chartOption: {
+      type: Object
     }
   },
   data() {
@@ -78,7 +97,7 @@ export default {
               display: false
             },
             ticks: {
-              color: 'rgba(255, 255, 255, 1)',
+              color: 'rgba(255, 255, 255, 0.9)',
               fontSize: 24,
               stepSize: 1,
               beginAtZero: true,
@@ -92,9 +111,10 @@ export default {
               display: false
             },
             ticks: {
-              color: 'rgba(255, 255, 255, 1)',
+              color: 'rgba(255, 255, 255, 0.9)',
               font: {
-                size: 18
+                size: 16,
+                style: 'italic'
               }
             }
           }
@@ -109,12 +129,15 @@ export default {
         datasets: [
           {
             label: 'Closing Price',
-            backgroundColor: ['green'],
             data: this.closingPrices,
-            borderColor: ['rgba(255, 255, 255, 0.9)'],
-            fill: true,
-            pointRadius: 0,
-            borderWidth: 2.5
+            borderColor: this.chartOption.color,
+            backgroundColor: this.chartOption.color,
+            pointBackgroundColor: '#11111100',
+            pointBorderColor: '#11111100',
+            pointHoverBackgroundColor: this.chartOption.color,
+            pointHoverBorderColor: '#FFF',
+            pointRadius: 7,
+            borderWidth: 1.5
           }
         ]
       })
@@ -124,5 +147,12 @@ export default {
 </script>
 
 <style scoped>
-
+.chart-area {
+  box-sizing: border-box;
+  background: linear-gradient(to right, #1B1B1C, #111111);
+  border-top-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  padding: 1em;
+  color: #11111100;
+}
 </style>

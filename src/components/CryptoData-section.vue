@@ -4,22 +4,22 @@
     <div class="cell">
       <span class="description">Ticker: </span>
       <div class="ticker-area">
-        <h1 class="ticker">{{ $store.state.stockInfo.ticker }}</h1>
-        <StockPerformance />
+        <h1 class="ticker">{{ '$' + $store.state.cryptoInfo.ticker }}</h1>
+        <CryptoPerformance />
       </div>
     </div>
     <!-- RIGHT SIDE OF THE DATA CONTAINER WHERE ALL THE INFO IS FOUND ON THE SEARCH -->
     <div class="cell2">
       <span class="description">Open:</span>
-      <span class="data">{{ $store.state.stockInfo.openPrice }}</span>
+      <span class="data">{{ $store.state.cryptoInfo.openPrice }}</span>
       <span class="description">Close:</span>
-      <span class="data">{{ $store.state.stockInfo.closePrice }}</span>
+      <span class="data">{{ $store.state.cryptoInfo.closePrice }}</span>
       <span class="description">High:</span>
-      <span class="data">{{ $store.state.stockInfo.highPrice }}</span>
+      <span class="data">{{ $store.state.cryptoInfo.highPrice }}</span>
       <span class="description">Low: </span>
-      <span class="data">{{ $store.state.stockInfo.lowPrice }}</span>
+      <span class="data">{{ $store.state.cryptoInfo.lowPrice }}</span>
       <span class="description">Volume:</span>
-      <span class="data">{{ $store.state.stockInfo.volume }}</span>
+      <span class="data">{{ $store.state.cryptoInfo.volume }}</span>
     </div>
   </div>
   <!-- LOADING INDICATOR -->
@@ -44,14 +44,14 @@
 
 import LoadingIndicator from '@/components/Loading-indicator.vue'
 import ErrorMessage from '@/components/Error-message.vue'
-import StockPerformance from '@/components/additionalAdds/Stock-performance.vue'
+import CryptoPerformance from '@/components/additionalAdds/Crypto-performance.vue'
 
 export default {
-  name: 'StockData',
+  name: 'CryptoDataSection',
   components: {
     LoadingIndicator,
     ErrorMessage,
-    StockPerformance
+    CryptoPerformance
   },
   props: ['stockLoadingError', 'isLoading', 'loadInfoContainer', 'dataSectionStyle'],
 }

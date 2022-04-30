@@ -16,7 +16,8 @@
     "pinia": "^2.0.13",
     "vue": "^3.2.13",
     "vue-chartjs": "^4.0.7",
-    "vue-chartkick": "^1.1.0"
+    "vue-chartkick": "^1.1.0",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

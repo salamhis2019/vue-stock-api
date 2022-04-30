@@ -7,8 +7,6 @@
     />
     <div>
       <DataSection 
-        :fetchedInfo="stockInfo"
-        :apiMethodInfo="apiData"
         :isLoading="isLoading"
         :stockLoadingError="stockLoadingError"
         :loadInfoContainer="loadInfoContainer"
@@ -21,6 +19,7 @@
       :apiMethodInfo="apiData"
       :closingPrices="closePriceArray"
       :timeLabels="timesArray"
+      :chartOption="chartOption"
       :loadInfoContainer="loadInfoContainer"
       id="stock-chart"
   />
@@ -59,19 +58,6 @@ export default {
         recentTime: null,
         metaData: null
       },
-      // DATA FOR STOCK INFO
-      stockInfo: {
-        openPrice: '',
-        closePrice: '',
-        highPrice: '',
-        lowPrice: '',
-        volume: '',
-        ticker: '',
-        rawTicker: null,
-        stockPerformance: null,
-        percentChange: null,
-        priceChange: null
-      },
       // DATA FOR UI ELEMENTS LOADING
       loadInfoContainer: false,
       stockLoadingError: false,
@@ -84,6 +70,9 @@ export default {
       timesArray: [],
       closePriceArray: [],
       chartData: [],
+      chartOption: {
+        color: '#52E24B'
+      }
     }
   },
   computed: {
@@ -150,8 +139,6 @@ export default {
       } catch(error) {
         this.errorMessage(error)
       }
-
-      // return data
     },
     getData(data) {
       this.apiData = data
@@ -168,74 +155,71 @@ export default {
       this.apiInfo.metaData = Object.keys(data)[0]
       
       // TICKER ON UI
-      this.stockInfo.ticker = this.tickerComputed
+      this.$store.state.stockInfo.ticker = this.tickerComputed
 
       // LOWEST PRICE
-      this.stockInfo.lowPrice = this.lowestPriceComputed
+      this.$store.state.stockInfo.lowPrice = this.lowestPriceComputed
 
       // HIGHEST PRICE
-      this.stockInfo.highPrice = this.highestPriceComputed
+      this.$store.state.stockInfo.highPrice = this.highestPriceComputed
 
       // GET TOTAL VOLUME
-      this.stockInfo.volume = this.totalVolumeComputed
+      this.$store.state.stockInfo.volume = this.totalVolumeComputed
 
       // RAW TICKER
-      this.stockInfo.rawTicker = data[this.apiInfo.metaData]['2. Symbol']
+      this.$store.state.stockInfo.rawTicker = data[this.apiInfo.metaData]['2. Symbol']
 
       // TIMES ARRAY INFO
       const times = Object.keys(Object.values(this.apiData)[1]).map((time) => time.slice(11,19))
-
       times.forEach(time => this.timesArray.push(time))
-
       this.timesArray = [...this.timesArray].reverse()
 
       // CLOSING PRICE ARRAY
       this.closePriceArray.length = 0
       const closingPrices = Object.values(data['Time Series (5min)']).map((info) => info['4. close'])
-
       closingPrices.forEach(closePrice => this.closePriceArray.push(closePrice))
-
       this.closePriceArray = [...this.closePriceArray].reverse()
       
+      // CALL FUNCTION THAT CATCHES DATA FROM THE DAILY API
       this.fetchOpenAndClose()
     },
     async fetchOpenAndClose() {
-      const response = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.stockInfo.rawTicker}&interval=5min&apikey=${this.VUE_APP_APIKEY}`)
-      const data = await response.json()
-        .then((data) => this.getOpenAndClose(data))
-        .catch((err) => this.errorMessage(err))
-
-      return data
+      try {
+        const {data} = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${this.$store.state.stockInfo.rawTicker}&interval=5min&apikey=${this.VUE_APP_APIKEY}`)
+        this.getOpenAndClose(data)
+      } catch(error) {
+        this.errorMessage(error)
+      }
     },
     getOpenAndClose (data) {
       this.apiDataDaily = data
 
       // OPEN PRICE
-      this.stockInfo.openPrice = this.openPriceComputed
+      this.$store.state.stockInfo.openPrice = this.openPriceComputed
 
       // CLOSING PRICE 
-      this.stockInfo.closePrice = this.closePriceComputed
+      this.$store.state.stockInfo.closePrice = this.closePriceComputed
 
       // PERCENT CHANGE
-      this.stockInfo.percentChange = this.percentChangeComputed
+      this.$store.state.stockInfo.percentChange = this.percentChangeComputed
 
       // DIFFERENCE
-      this.stockInfo.priceChange = this.priceChangeComputed
+      this.$store.state.stockInfo.priceChange = this.priceChangeComputed
 
       // PUSH DATA TO RECENTLY VIEWED ARRAY
       const recentData = {
         id: new Date().valueOf(),
-        ticker: this.stockInfo.ticker,
-        open: this.stockInfo.openPrice,
-        close: this.stockInfo.closePrice,
-        high: this.stockInfo.highPrice,
-        low: this.stockInfo.lowPrice,
-        volume: this.stockInfo.volume
+        ticker: this.$store.state.stockInfo.ticker,
+        open: this.$store.state.stockInfo.openPrice,
+        close: this.$store.state.stockInfo.closePrice,
+        high: this.$store.state.stockInfo.highPrice,
+        low: this.$store.state.stockInfo.lowPrice,
+        volume: this.$store.state.stockInfo.volume
       }
       this.recentlyViewed.push(recentData)
 
       // DETERMINE IF THE ARROW FOR THE STOCK PROJECT IS UP OR DOWN
-      return (this.stockInfo.openPrice < this.stockInfo.closePrice) ? this.stockInfo.stockPerformance = 'gained' : this.stockInfo.stockPerformance = 'lost'
+      return (this.$store.state.stockInfo.openPrice < this.$store.state.stockInfo.closePrice) ? this.$store.state.stockInfo.stockPerformance = 'gained' : this.$store.state.stockInfo.stockPerformance = 'lost'
     },
     // DISPLAY ERROR MESSAGE IF THE USER INPUT IS NOT VALID
     errorMessage(error) {

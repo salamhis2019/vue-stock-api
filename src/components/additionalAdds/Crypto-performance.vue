@@ -1,11 +1,11 @@
 <template>
   <div class="stock-performance-container">
     <div class="daily-performance">
-      <i v-if="$store.state.stockInfo.stockPerformance === 'gained'" class="material-icons arrow-up">trending_up</i>
+      <i v-if="$store.state.cryptoInfo.stockPerformance === 'gained'" class="material-icons arrow-up">trending_up</i>
       <i v-else class="material-icons arrow-down">trending_down</i>          
       <div class="performance">
-        <p class="percent-change">{{ $store.state.stockInfo.percentChange }}</p>
-        <p class="price-change">{{ $store.state.stockInfo.priceChange }}</p>
+        <p class="percent-change">{{ $store.state.cryptoInfo.percentChange }}</p>
+        <p class="price-change">{{ $store.state.cryptoInfo.priceChange }}</p>
       </div>            
     </div>
   </div>
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: 'StockPerformance',
+  name: 'CryptoPerformace',
 }
 </script>
 
