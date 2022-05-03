@@ -8,7 +8,7 @@
         :key="info.id"
       >
         <div class="recent-header">
-          <p class="recently-viewed-ticker">{{ info.ticker }}</p>
+          <p class="recently-viewed-ticker" @click="populateRecentlyViewedStock(i)">${{ info.ticker }}</p>
           <i class="material-icons" @click="deleteRecent(i)">close</i>
         </div>
         <div class="recent-info-container">
@@ -24,18 +24,24 @@
 export default {
   name: 'RecentlyViewedArea',
   props: ['recentlyViewedArr', 'dataSectionStyle', 'deleteRecent'],
+  emits: ['fetchApi'],
   data () {
     return {
       currentRecentStyle: false
     }
   },
-  methods: {}
+  methods: {
+    populateRecentlyViewedStock(i) {
+      const ticker = this.recentlyViewedArr[i].ticker
+      console.log(ticker)
+      this.$emit('fetchApi', ticker)
+    }
+  }
 }
 </script>
 
 <style scoped>
   /* RECENTLY VIEWED AREA */
-
   .recent-text {
     display: flex;
     flex-direction: row;
@@ -75,8 +81,6 @@ export default {
     background: radial-gradient(circle, #111111 0%, #1B1B1C 85%);
     color: #E7F0FF;
     transition: 0.2s ease;
-
-    cursor: pointer;
   }
 
   .recent-crypto {
@@ -102,6 +106,15 @@ export default {
     font-size: 2em;
     font-family: 'Oxygen', sans-serif;
     font-weight: 300;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+
+  .recently-viewed-ticker:hover {
+    color: #52E24B;
+    font-weight: 500;
+    transform: scale(1.05);
+    text-shadow: 1px 1px rgba(255, 255, 255, 0.244);
   }
 
   .material-icons {

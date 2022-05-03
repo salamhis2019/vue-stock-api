@@ -10,8 +10,6 @@
       v-model="symbol"
       @keyup.enter="fetchData"
       > 
-      <!-- BUTTON TO GENERATE -->
-      <!-- <button @click="fetchData">Generate</button> -->
       <i :class="currentButtonStyle" @click="fetchData">keyboard_arrow_right</i>
     </div>
   </div>

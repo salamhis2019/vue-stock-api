@@ -20,6 +20,7 @@
     id="stock-chart"
   />
   <RecentlyViewedArea
+    @fetchApi="fetchApi"
     :recentlyViewedArr="recentlyViewedItems"
     :dataSectionStyle="dataSectionStyle"
     :deleteRecent="deleteRecent"
@@ -65,7 +66,7 @@ export default {
       closePriceArray: [],
       chartData: [],
       chartOption: {
-        color: '#1097f7'
+        color: null
       }
     }
   },
@@ -184,9 +185,7 @@ export default {
       return data
     },
     getOpenAndClose (data) {
-      console.log('datasuccess')
       this.apiDataDaily = data
-      console.log(this.apiDataDaily)
 
       // OPEN PRICE
       this.$store.state.cryptoInfo.openPrice = this.openPriceComputed
@@ -212,13 +211,31 @@ export default {
       }
       this.recentlyViewed.push(recentData)
 
-      return (this.$store.state.cryptoInfo.openPrice < this.$store.state.cryptoInfo.closePrice) ? this.$store.state.cryptoInfo.stockPerformance = 'gained' : this.$store.state.cryptoInfo.stockPerformance = 'lost'
+      // DETERMINE THE VALUE OF THE STOCK PERFORMANCE STATE
+      if (this.$store.state.cryptoInfo.openPrice < this.$store.state.cryptoInfo.closePrice) { 
+        this.$store.state.cryptoInfo.stockPerformance = 'gained' 
+      } else { 
+        this.$store.state.cryptoInfo.stockPerformance = 'lost' 
+      }
+      
+      // RUN FUNCTION TO CHANGE THE CHART LINE COLOR
+      this.lineColor()
+    },
+    async lineColor() {
+      // CHANGE THE COLOR OF THE LINE BASED ON THE STOCK PERFORMANCE RETURN VALUE
+      await this.$store.state.cryptoInfo.stockPerformance
+      if (this.$store.state.cryptoInfo.stockPerformance === 'gained') { 
+        this.chartOption.color = '#1097f7'
+      } else {
+        this.chartOption.color = 'red '
+      }
     },
     errorMessage(data) {
       console.error('This is an error try again "' + data + '"')
 
       console.log('data failed')
       this.ticker = ""
+      this.loadInfoContainer = false
       this.stockLoadingError = true
     },
     deleteRecent(i) {

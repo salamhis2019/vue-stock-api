@@ -58,98 +58,99 @@ export default {
 </script>
 
 <style>
-  /* GLOBAL STYLES */
-  * {
-    font-family: 'Nunito', sans-serif;
-  }
-  
-  .crypto-background {
-    background: linear-gradient(to bottom, #080808, rgb(0, 20, 42));
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-  }
+/* GLOBAL STYLES */
+* {
+  font-family: 'Nunito', sans-serif;
+}
 
-  body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 2em 0;
+.crypto-background {
+  background: linear-gradient(to bottom, #080808, rgb(0, 20, 42));
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
 
-    background: linear-gradient(to bottom, #080808, rgb(0, 20, 2));
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-  }
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 2em 0;
 
-  /* NAV AREA */
+  background: linear-gradient(to bottom, #080808, rgb(0, 20, 2));
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
 
-  .tabs {
-    width: 500px;
-    margin: 0 auto 2.5em auto;
+/* NAV AREA */
 
-    text-align: center;
-  }
+.tabs {
+  width: 500px;
+  margin: 0 auto 2.5em auto;
 
-  .button {
-    height: 2.5em;
-    width: 175px;
-    margin: 0.5em;
+  text-align: center;
+}
 
-    background-color: #004f6b47;
-    color: #ffffffab;
-    font-size: 1.2em;
-    font-family: 'Nunito', sans-serif;
+.button {
+  height: 2.5em;
+  width: 175px;
+  margin: 0.5em;
 
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s ease
-  }
+  background-color: #004f6b47;
+  color: #ffffffab;
+  font-size: 1.2em;
+  font-family: 'Nunito', sans-serif;
 
-  .stocks-button {
-    margin-right: 0.5em;
-    border-bottom: 2px solid;
-    border-image: linear-gradient(to right, #002F09, #52E24B) 1;   
-  }
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease
+}
 
-  .crypto-button:hover {
-    background-color: #004f6b8f;
-  }
-  
-  .stocks-button:hover {
-    background-color: #006b248f;
-  }
+.stocks-button {
+  margin-right: 0.5em;
+  border-bottom: 2px solid;
+  border-image: linear-gradient(to right, #002F09, #52E24B) 1;   
+}
 
-  .crypto-button {
-    border-bottom: 2px solid;
-    border-image: linear-gradient(to right, #03254E, #1097f7) 1; 
-    border-bottom-right-radius: 10px;
+.crypto-button:hover {
+  background-color: #004f6b8f;
+}
 
-    transition: 0.2s ease;
-  }
+.stocks-button:hover {
+  background-color: #006b248f;
+}
 
-  .crypto-button:active {
-    background-color: #03254E;
-    color: #E7F0FF;
-  }
+.crypto-button {
+  border-bottom: 2px solid;
+  border-image: linear-gradient(to right, #03254E, #1097f7) 1; 
+  border-bottom-right-radius: 10px;
 
-  .crypto-default:hover {
-    border-bottom: 2px solid;
-    border-image: linear-gradient(to right, #03254E, #1097f7) 1; 
-  }
+  transition: 0.2s ease;
+}
 
-  .stock-default:hover {
-    border-bottom: 2px solid;
-    border-image: linear-gradient(to right, #002F09, #52E24B) 1;  
-  }
+.crypto-button:active {
+  background-color: #03254E;
+  color: #E7F0FF;
+}
 
-  .stocks-logo, .crypto-logo {
-    position: absolute;
-    width: 125px;
-    bottom: 50px;
-    right: 70px;
-  }
+.crypto-default:hover {
+  border-bottom: 2px solid;
+  border-image: linear-gradient(to right, #03254E, #1097f7) 1; 
+}
+
+.stock-default:hover {
+  border-bottom: 2px solid;
+  border-image: linear-gradient(to right, #002F09, #52E24B) 1;  
+}
+
+.stocks-logo, .crypto-logo {
+  opacity: 50%;
+  position: fixed;
+  width: 125px;
+  bottom: 50px;
+  right: 70px;
+}
 </style>

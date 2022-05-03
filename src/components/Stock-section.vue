@@ -24,6 +24,7 @@
       id="stock-chart"
   />
   <RecentlyViewedArea
+    @fetchApi="fetchApi"
     :recentlyViewedArr="recentlyViewedItems"
     :dataSectionStyle="dataSectionStyle"
     :deleteRecent="deleteRecent"
@@ -71,7 +72,7 @@ export default {
       closePriceArray: [],
       chartData: [],
       chartOption: {
-        color: '#52E24B'
+        color: null
       }
     }
   },
@@ -81,7 +82,7 @@ export default {
     },
 
     tickerComputed: function () {
-      return '$' + this.apiData[this.apiInfo.metaData]['2. Symbol']
+      return this.apiData[this.apiInfo.metaData]['2. Symbol']
     },
 
     openPriceComputed: function() {
@@ -214,17 +215,37 @@ export default {
         close: this.$store.state.stockInfo.closePrice,
         high: this.$store.state.stockInfo.highPrice,
         low: this.$store.state.stockInfo.lowPrice,
-        volume: this.$store.state.stockInfo.volume
+        volume: this.$store.state.stockInfo.volume,
+        stockPerformance: this.$store.state.stockInfo.stockPerformance,
+        percentChange: this.$store.state.stockInfo.percentChange,
+        priceChange: this.$store.state.stockInfo.priceChange
       }
       this.recentlyViewed.push(recentData)
 
-      // DETERMINE IF THE ARROW FOR THE STOCK PROJECT IS UP OR DOWN
-      return (this.$store.state.stockInfo.openPrice < this.$store.state.stockInfo.closePrice) ? this.$store.state.stockInfo.stockPerformance = 'gained' : this.$store.state.stockInfo.stockPerformance = 'lost'
+      // DETERMINE THE VALUE OF THE STOCK PERFORMANCE STATE
+      if (this.$store.state.stockInfo.openPrice < this.$store.state.stockInfo.closePrice) { 
+        this.$store.state.stockInfo.stockPerformance = 'gained' 
+      } else { 
+        this.$store.state.stockInfo.stockPerformance = 'lost' 
+      }
+
+      // RUN FUNCTION TO CHANGE THE CHART LINE COLOR
+      this.lineColor()
+    },
+    async lineColor() {
+      // CHANGE THE COLOR OF THE LINE BASED ON THE STOCK PERFORMANCE RETURN VALUE
+      await this.$store.state.stockInfo.stockPerformance
+      if (this.$store.state.stockInfo.stockPerformance === 'gained') { 
+        this.chartOption.color = '#52E24B'
+      } else { 
+        this.chartOption.color = 'red' 
+      }
     },
     // DISPLAY ERROR MESSAGE IF THE USER INPUT IS NOT VALID
     errorMessage(error) {
       console.log(error)
       this.stockLoadingError = true
+      this.loadInfoContainer = false
     }, 
     // DELETE RECENTLY VIEWED ITEM FROM DOM
     deleteRecent(i) {

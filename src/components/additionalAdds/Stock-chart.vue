@@ -142,7 +142,7 @@ export default {
         ]
       })
     }
-  }
+  },
 }
 </script>
 
