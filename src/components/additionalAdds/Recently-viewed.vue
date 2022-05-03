@@ -8,7 +8,7 @@
         :key="info.id"
       >
         <div class="recent-header">
-          <p class="recently-viewed-ticker" @click="populateRecentlyViewedStock(i)">${{ info.ticker }}</p>
+          <p :class="[(dataSectionStyle === 'stock-container') ? currentRecentStyle = 'recent-stock-ticker' : 'recent-crypto-ticker']" @click="populateRecentlyViewedStock(i)">${{ info.ticker }}</p>
           <i class="material-icons" @click="deleteRecent(i)">close</i>
         </div>
         <div class="recent-info-container">
@@ -102,7 +102,7 @@ export default {
     height: 75px;
   }
 
-  .recently-viewed-ticker {
+  .recent-stock-ticker {
     font-size: 2em;
     font-family: 'Oxygen', sans-serif;
     font-weight: 300;
@@ -110,12 +110,27 @@ export default {
     transition: 0.2s ease;
   }
 
-  .recently-viewed-ticker:hover {
+  .recent-stock-ticker:hover {
     color: #52E24B;
     font-weight: 500;
     transform: scale(1.05);
-    text-shadow: 1px 1px rgba(255, 255, 255, 0.244);
   }
+
+  .recent-crypto-ticker {
+    font-size: 2em;
+    font-family: 'Oxygen', sans-serif;
+    font-weight: 300;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+
+  .recent-crypto-ticker:hover {
+    color: #1097f7;
+    font-weight: 500;
+    transform: scale(1.05);
+  }
+
+  /* DELETE ICON STYLES */
 
   .material-icons {
     font-size: 36px;

@@ -1,36 +1,62 @@
 <template>
-  <div class="hero-container">
-    <div class="tabs">
-      <button :class="stockButtonStyle" class="button stock-default" @click="chooseComponent('StockSection')">Stocks</button>
-      <button :class="cryptoButtonStyle" class="button crypto-default" @click="chooseComponent('CryptoSection')">Crypto</button>
+  <div class="content-container">
+    <div class="hero-container">
+      <h1 
+        v-if="component === 'StockSection'" 
+        class="stock-header">
+        Vue Stock App
+      </h1>
+      <h1 
+        v-else 
+        class="crypto-header">
+        Vue Crypto App
+      </h1>
+      <!-- NAVIGATION AREA TO SWTICH BETWEEN COMPONENTS -->
+      <div class="tabs">
+        <button 
+          :class="stockButtonStyle" 
+          class="button stock-default" 
+          @click="chooseComponent('StockSection')">
+          Stocks
+        </button>
+        <button 
+          :class="cryptoButtonStyle" 
+          class="button crypto-default" 
+          @click="chooseComponent('CryptoSection')">
+          Crypto
+        </button>
+      </div>
+      <keep-alive>
+        <component :is="component"></component>
+      </keep-alive>
+      <img 
+        v-if="component === 'StockSection'" class="crypto-logo" 
+        src="../src/images/stocks-logo.png" 
+        alt=""
+      >
+      <img 
+        v-else 
+        class="crypto-logo" 
+        src="../src/images/crypto-logo.png" 
+        alt=""
+      >
     </div>
-    <keep-alive>
-      <component :is="component"></component>
-    </keep-alive>
-    <img 
-      v-if="component === 'StockSection'" class="crypto-logo" 
-      src="../src/images/stocks-logo.png" 
-      alt=""
-    >
-    <img 
-      v-else 
-      class="crypto-logo" 
-      src="../src/images/crypto-logo.png" 
-      alt=""
-    >
   </div>
+  <FooterArea />
 </template>
 
 <script>
 import StockSection from '@/components/Stock-section.vue'
 import CryptoSection from '@/components/Crypto-section.vue'
+import FooterArea from '@/components/UI/Footer-area.vue'
 
 export default {
   name: 'app',
   components: {
     // eslint-disable-next-line vue/no-unused-components
     StockSection,
-    CryptoSection
+    CryptoSection,
+    FooterArea
   },
   data () {
     return {
@@ -71,16 +97,39 @@ export default {
 }
 
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  margin: 2em 0;
-
-  background: linear-gradient(to bottom, #080808, rgb(0, 20, 2));
+  background: linear-gradient(to bottom, #080808, #001402);
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  margin: 0;
+}
+
+.content-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+  margin-bottom: 5em;
+}
+
+.stock-header {
+  text-align: center;
+  font-size: 82px;
+  font-family: 'Nunito', sans-serif; 
+  font-style: italic; 
+  background-image: linear-gradient(to right, #002d05 10%, #52E24B 90%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.crypto-header {
+  text-align: center;
+  font-size: 82px;
+  font-family: 'Nunito', sans-serif; 
+  font-style: italic; 
+  background-image: linear-gradient(to right, #00102d 10%, #1097f7 90%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* NAV AREA */
@@ -150,7 +199,7 @@ body {
   opacity: 50%;
   position: fixed;
   width: 125px;
-  bottom: 50px;
+  bottom: 130px;
   right: 70px;
 }
 </style>

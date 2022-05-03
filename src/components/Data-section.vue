@@ -4,7 +4,7 @@
     <div class="cell">
       <span class="description">Ticker: </span>
       <div class="ticker-area">
-        <h1 class="ticker">${{ $store.state.stockInfo.ticker }}</h1>
+        <h2 class="ticker">${{ $store.state.stockInfo.ticker }}</h2>
         <StockPerformance />
       </div>
     </div>
