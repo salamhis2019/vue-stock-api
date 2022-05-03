@@ -3,8 +3,8 @@
     <div class="footer-area">
       <div class="content">
         <div class="icons-section">
-          <a href=""><i class="fa fa-github icon"></i></a> 
-          <a href=""><i class="fa fa-linkedin-square icon"></i></a> 
+          <a href="https://www.github.com/salamhis2019"><i class="fa fa-github icon" target="blank"></i></a> 
+          <a href="https://www.linkedin.com/in/hishamsalameh" target="blank"><i class="fa fa-linkedin-square icon"></i></a> 
         </div>
         <p>Created by: <span class="name">Hisham Salameh</span></p>
         <p>&</p>
@@ -39,6 +39,11 @@ a {
   text-align: center;
   width: 100%;
   color: #ffffffab;
+  transition: 0.3s ease;
+}
+
+a:hover {
+  color: white
 }
 
 p {
